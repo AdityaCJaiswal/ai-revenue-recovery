@@ -1,0 +1,230 @@
+# Retry, contact and mandate caps.
+#
+# These are CONFIG, not constants, because several of them are not settled facts.
+# Every entry carries its provenance. Grades follow RESEARCH.md:
+#   [P] primary source — quotable as fact
+#   [V] vendor marketing claim
+#   [T] third-party — directional only
+#   [UNVERIFIED] — do not rely on; verify before the number goes anywhere real
+#
+# If you change a number here, change its source comment too.
+
+contact:
+  # [P] RBI/2022-23/108, 12 Aug 2022. The window is attached grammatically and
+  # exclusively to "calling the borrower" — it is VOICE-ONLY. Messages fall under
+  # a separate, time-agnostic bar on "inappropriate messages".
+  # RESEARCH.md §9.2. Do NOT copy the US 21:00 end time.
+  voice_window_ist: { start: "08:00", end: "19:00" }
+
+  # Messages are not time-limited by RBI/2022-23/108. We hold them to the same
+  # window as a prudent product default, not because law requires it.
+  message_window_ist: { start: "08:00", end: "19:00" }
+  message_window_basis: "voluntary default — not required by RBI/2022-23/108"
+
+  # [P] US Reg F 12 CFR 1006.14(b)(2)(i). NOT Indian law. Adopted as a voluntary
+  # frequency default because it is the best-codified contact rule in existence.
+  # RESEARCH.md §9.6.
+  max_calls_per_7d: 7
+  cooldown_days_after_conversation: 7
+  frequency_basis: "voluntary — US Reg F 7-in-7, adopted as default"
+
+  # [T] Caller Digital publishes "2-3 calls/day cap" as its India practice.
+  max_calls_per_day: 2
+
+retry:
+  card_si:
+    # [P] Card e-mandate debits sit in `processing` for ~26h and cannot be
+    # cancelled → minimum practical retry interval on Indian card SI is ~1/day.
+    min_interval_hours: 26
+    # [P] Razorpay subscription ladder: fail day 0 -> pending, retries on days
+    # 1, 2, 3 -> halted. RESEARCH.md CORRECTIONS.
+    max_attempts: 3
+    window_days: 3
+
+  upi_autopay:
+    # [UNVERIFIED] The widely repeated "1 original + 3 retries" traces ONLY to a
+    # Razorpay marketing blog. NPCI (npci.org.in) returns HTTP 403 to
+    # programmatic fetch. RESEARCH.md "Still open — do not guess".
+    # Pull manually: UPI OC 223 FY 2025-26.
+    max_attempts: 3
+    max_attempts_grade: UNVERIFIED
+    min_interval_hours: 24
+
+  enach:
+    # [UNVERIFIED] All NACH/eNACH return codes and re-presentation limits are
+    # unretrieved. Pull manually: NACH-006-FY-24-25, Circulars 240 / 274 / 011
+    # MMS, NACH Procedural Guidelines V.6.
+    # NOTE: NPCI Circular 016 FY2019-20 indicates NPCI PENALISES specific return
+    # reasons — some retries cost money per attempt. Model cost before retrying.
+    max_attempts: 2
+    max_attempts_grade: UNVERIFIED
+    min_interval_hours: 24
+    banking_days_only: true
+
+  card:
+    # [P] Visa: response codes are sorted into four categories (Apr 2020, upd.
+    # 17 Apr 2021). Category 1 = NEVER reattempt. Category 2 = up to 15 in 30
+    # days. Response Code 14 must never be reattempted on the same account
+    # number. The bulletin states no fee amount — the $0.10 figure quoted
+    # everywhere is a processor schedule, not a scheme rule.
+    max_attempts_30d: 15
+    scope: "Visa category-2 response codes only"
+    # [P] Mastercard: MAC 03 = do not try again; MAC 21 = payment cancellation.
+    # Mastercard charges a fee for any retry within 30 days of either.
+    # The "1/day, ~10 per 30 days" figure is WRONG — not in any scheme source.
+    stop_on_merchant_advice_codes: ["03", "21"]
+
+mandate:
+  # [P] RBI/DPSS/2026-27/396, E-Mandate Framework 2026, 21 Apr 2026.
+  afa_free_ceiling_paise: 1500000            # Rs 15,000
+  afa_free_ceiling_specified_paise: 10000000 # Rs 1,00,000 — insurance premia,
+                                             # MF SIPs, credit-card bill payments
+  pre_debit_notice_hours: 24                 # min lead time, per debit
+  # The Framework is SILENT on retry / re-presentation (three full-text reads).
+  # The retry constraint lives in NPCI/scheme rules or the PA contract, NOT RBI.
+  # Never write "RBI blocks retry" — RBI requires customer-presence, which makes
+  # silent credential-swap-and-retry impossible. Different claim.
+  framework_silent_on_retry: true
+
+stopping_rules:
+  # All machine-checkable. RESEARCH.md §7.
+  hard_decline: "stop retrying; switch to credential collection"
+  merchant_advice_03_21: "stop"
+  attempt_budget_exhausted: "stop"
+  mandate_revoked_or_paused: "stop; re-register"
+  opt_out_received: "stop permanently on that channel"
+  frequency_cap_hit: "cooldown"
+  outside_voice_window: "defer to next window open"
+  amount_above_mandate_cap: "customer-present flow only, never retry"
+  dispute_or_distress_detected: "human handoff"
+
+cost_paise:
+  # Channel cost drives the expected-value function. Voice is the expensive one,
+  # which is exactly why the EV math has to be real.
+  sms: 20
+  whatsapp: 80
+  email: 5
+  upi_intent_link: 0
+  # [P] Sarvam pricing: STT Rs 30/hour, Bulbul TTS Rs 30/10K chars.
+  # ~Rs 5 for a 3-minute call all-in. RESEARCH.md §8.2.
+  voice_call_per_3min: 500
+  retry_attempt: 0   # gateway-dependent; NPCI penalises some NACH return reasons
+
+success_priors_bp:
+  # ASSUMPTION, hand-written. P(recovery | action, decline family) in basis
+  # points. Transparent placeholder priors a judge can interrogate -- NOT
+  # measured rates and NOT an ML model. Replace with measured rates once real
+  # outcome data exists. Retry priors decay per prior attempt
+  # (attempt_decay_bp below); contact-channel priors do not.
+  retry_at:
+    insufficient_funds: 3200
+    issuer_decline: 1800
+    psp_timeout: 6000
+    gateway_error: 5500
+    unknown: 1500
+  upi_intent_link:
+    insufficient_funds: 2800
+    issuer_decline: 2200
+    psp_timeout: 3000
+    mandate_revoked: 800
+    mandate_paused: 1400
+    mandate_expired: 1000
+    authentication_required: 2200
+    amount_exceeds_mandate_cap: 2400
+    hard_decline: 1600
+    gateway_error: 2400
+    unknown: 1500
+  whatsapp_link:
+    insufficient_funds: 2400
+    issuer_decline: 2000
+    psp_timeout: 2200
+    mandate_revoked: 1200
+    mandate_paused: 1500
+    mandate_expired: 1200
+    authentication_required: 2000
+    amount_exceeds_mandate_cap: 1800
+    hard_decline: 1500
+    gateway_error: 1900
+    unknown: 1200
+  sms_reminder:
+    insufficient_funds: 1400
+    issuer_decline: 1200
+    psp_timeout: 1300
+    mandate_revoked: 700
+    mandate_paused: 900
+    mandate_expired: 700
+    authentication_required: 1200
+    amount_exceeds_mandate_cap: 1100
+    hard_decline: 900
+    gateway_error: 1100
+    unknown: 800
+  email_reminder:
+    insufficient_funds: 800
+    issuer_decline: 700
+    psp_timeout: 700
+    mandate_revoked: 400
+    mandate_paused: 500
+    mandate_expired: 400
+    authentication_required: 700
+    amount_exceeds_mandate_cap: 600
+    hard_decline: 500
+    gateway_error: 600
+    unknown: 500
+  voice_call:
+    insufficient_funds: 4200
+    issuer_decline: 3200
+    psp_timeout: 2000
+    mandate_revoked: 3500
+    mandate_paused: 3800
+    mandate_expired: 3200
+    authentication_required: 3000
+    amount_exceeds_mandate_cap: 3600
+    hard_decline: 2500
+    gateway_error: 2000
+    unknown: 2000
+  mandate_reregistration:
+    mandate_revoked: 2600
+    mandate_paused: 3000
+    mandate_expired: 2800
+    authentication_required: 2400
+    hard_decline: 2200
+  escalate_human:
+    # Humans earn their Rs 350 cost on HARD cases (relationship saves, opaque
+    # declines), not on routine first-attempt NSF -- there the bot does the same
+    # work cheaper. Encoded per family so the EV ranking reflects that.
+    insufficient_funds: 4000
+    issuer_decline: 3400
+    psp_timeout: 1500
+    gateway_error: 1500
+    mandate_revoked: 4200
+    mandate_paused: 4000
+    mandate_expired: 3600
+    authentication_required: 3400
+    amount_exceeds_mandate_cap: 4200
+    hard_decline: 3800
+    unknown: 2500
+    default: 3500
+  do_nothing:
+    default: 0
+
+# Retry-only decay per prior failed attempt: prior *= 7500/10000 each time.
+attempt_decay_bp: 7500
+
+annoyance_cost_paise:
+  # ASSUMPTION. Prices customer irritation / churn risk into EV so the cheap-to-
+  # send channel is not automatically the right one, and voice must EARN its
+  # place. This line item is what makes voice EV-negative on a Rs 499
+  # subscription and clearly right on a Rs 45,000 EMI.
+  retry_at: 500
+  upi_intent_link: 1500
+  whatsapp_link: 1500
+  sms_reminder: 1200
+  email_reminder: 300
+  voice_call: 25000
+  mandate_reregistration: 2000
+  escalate_human: 5000
+  do_nothing: 0
+
+# Human escalation: real ops time is the cost driver.
+escalate_human_cost_paise: 35000
+escalate_human_min_amount_paise: 2500000   # Rs 25,000

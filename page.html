@@ -1,0 +1,1377 @@
+<title>India's Revenue Recovery Gap</title>
+
+<style>
+:root {
+  --paper:      #F2F5F3;
+  --surface:    #FBFCFB;
+  --surface-2:  #E9EEEB;
+  --ink:        #0F1615;
+  --ink-soft:   #34423E;
+  --muted:      #57635F;
+  --rule:       #C9D4CF;
+  --rule-soft:  #E1E7E4;
+  --accent:     #0A6C5C;
+  --accent-dim: #DBEAE5;
+  --stop:       #A62639;
+  --stop-dim:   #F5DFE3;
+  --warn:       #8A5A00;
+  --warn-dim:   #F5EAD4;
+  --info:       #2F4B7C;
+  --info-dim:   #DFE6F2;
+  --shadow:     0 1px 2px rgba(15,22,21,.05), 0 8px 24px -16px rgba(15,22,21,.18);
+
+  --display: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --body: Charter, "Bitstream Charter", "Iowan Old Style", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --measure: 67ch;
+  --rail: 236px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #0B1211;
+    --surface:    #131C1A;
+    --surface-2:  #1B2523;
+    --ink:        #E4EDE9;
+    --ink-soft:   #BECBC6;
+    --muted:      #8B9994;
+    --rule:       #2C3A36;
+    --rule-soft:  #1E2927;
+    --accent:     #43C4A8;
+    --accent-dim: #14312B;
+    --stop:       #F08A9C;
+    --stop-dim:   #35191F;
+    --warn:       #E0B15C;
+    --warn-dim:   #322710;
+    --info:       #9DB6E4;
+    --info-dim:   #1A2438;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:      #0B1211;
+  --surface:    #131C1A;
+  --surface-2:  #1B2523;
+  --ink:        #E4EDE9;
+  --ink-soft:   #BECBC6;
+  --muted:      #8B9994;
+  --rule:       #2C3A36;
+  --rule-soft:  #1E2927;
+  --accent:     #43C4A8;
+  --accent-dim: #14312B;
+  --stop:       #F08A9C;
+  --stop-dim:   #35191F;
+  --warn:       #E0B15C;
+  --warn-dim:   #322710;
+  --info:       #9DB6E4;
+  --info-dim:   #1A2438;
+  --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- shell ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.rail {
+  border-right: 1px solid var(--rule);
+  padding: 2.5rem 1.5rem 4rem 1.75rem;
+}
+
+.rail-inner { position: sticky; top: 2.5rem; display: flex; flex-direction: column; gap: 2rem; }
+
+.rail-mark {
+  font-family: var(--display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--accent);
+  line-height: 1.4;
+}
+
+.rail-mark span { display: block; color: var(--muted); font-weight: 500; }
+
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+
+nav.toc a {
+  display: flex;
+  gap: .6rem;
+  font-family: var(--display);
+  font-size: .795rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: .34rem .5rem .34rem 0;
+  border-top: 1px solid var(--rule-soft);
+}
+
+nav.toc li { margin: 0; }
+nav.toc li:first-child a { border-top: 0; }
+nav.toc a:hover { color: var(--accent); }
+nav.toc a b { color: var(--muted); font-weight: 500; font-family: var(--mono); font-size: .72rem; font-variant-numeric: tabular-nums; }
+nav.toc a:hover b { color: var(--accent); }
+
+.key { display: flex; flex-direction: column; gap: .5rem; }
+.key-h {
+  font-family: var(--display); font-size: .66rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.key p { margin: 0; font-family: var(--display); font-size: .73rem; line-height: 1.45; color: var(--muted); }
+.key p b { color: var(--ink-soft); font-weight: 600; }
+
+main { padding: 2.5rem clamp(1.1rem, 3.6vw, 3.25rem) 6rem; min-width: 0; }
+
+.measure { max-width: var(--measure); }
+
+/* ---------- type ---------- */
+
+h1 {
+  font-family: var(--display);
+  font-size: clamp(2.1rem, 5.4vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -.03em;
+  font-weight: 700;
+  margin: 0 0 1.1rem;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+
+h2 {
+  font-family: var(--display);
+  font-size: clamp(1.32rem, 2.5vw, 1.62rem);
+  line-height: 1.16;
+  letter-spacing: -.018em;
+  font-weight: 700;
+  margin: 0 0 .3rem;
+  text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--display);
+  font-size: 1.03rem;
+  line-height: 1.28;
+  letter-spacing: -.008em;
+  font-weight: 700;
+  margin: 2.1rem 0 .55rem;
+  text-wrap: balance;
+}
+
+h4 {
+  font-family: var(--display);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 1.9rem 0 .6rem;
+}
+
+p { margin: 0 0 1.05rem; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+code, .mono {
+  font-family: var(--mono);
+  font-size: .855em;
+  font-variant-numeric: tabular-nums;
+}
+
+p code, li code, td code, th code, .rung-body code {
+  background: var(--surface-2);
+  border-radius: 3px;
+  padding: .08em .32em;
+  color: var(--ink-soft);
+}
+
+.lede {
+  font-size: 1.16rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 58ch;
+}
+
+.eyebrow {
+  font-family: var(--display);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .85rem;
+}
+
+section { padding-top: 3.4rem; scroll-margin-top: 1.5rem; }
+.sub { color: var(--muted); font-family: var(--display); font-size: .875rem; margin: 0 0 1.5rem; max-width: 60ch; }
+
+ul, ol { padding-left: 1.15rem; margin: 0 0 1.05rem; }
+li { margin-bottom: .5rem; }
+li::marker { color: var(--muted); }
+
+/* ---------- confidence chips: the page's signature device ---------- */
+
+.chip {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: .625rem;
+  font-weight: 700;
+  letter-spacing: .085em;
+  text-transform: uppercase;
+  padding: .12em .42em;
+  border-radius: 3px;
+  vertical-align: .12em;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.chip.p { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.chip.v { background: var(--info-dim); color: var(--info); border-color: var(--info); }
+.chip.t { background: var(--warn-dim); color: var(--warn); border-color: var(--warn); }
+.chip.x { background: var(--stop-dim); color: var(--stop); border-color: var(--stop); }
+.chip.n { background: var(--surface-2); color: var(--muted); border-color: var(--rule); }
+
+/* ---------- callouts ---------- */
+
+.thesis {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px 6px 6px 2px;
+  padding: 1.5rem 1.6rem 1.15rem;
+  margin: 0 0 1.6rem;
+  box-shadow: var(--shadow);
+}
+
+.thesis .quote {
+  font-family: var(--mono);
+  font-size: .875rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: .7rem .85rem;
+  margin: 0 0 1rem;
+}
+
+.thesis h4 { margin-top: 0; }
+.thesis p:last-child { margin-bottom: 0; }
+
+.note {
+  border-left: 2px solid var(--rule);
+  padding: .1rem 0 .1rem 1.1rem;
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+.note b { color: var(--ink-soft); }
+.note p:last-child { margin-bottom: 0; }
+
+/* ---------- bleed + tables ---------- */
+
+.bleed { margin: 1.5rem 0 1.9rem; max-width: 100%; }
+.scroller { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+
+table { border-collapse: collapse; width: 100%; font-size: .875rem; font-family: var(--display); }
+
+caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 0 .55rem;
+}
+
+th, td { text-align: left; padding: .62rem .8rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+thead th {
+  font-size: .68rem; letter-spacing: .075em; text-transform: uppercase;
+  color: var(--muted); font-weight: 700; background: var(--surface-2);
+  border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: 0; }
+td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.t-lead { font-weight: 700; color: var(--ink); }
+
+/* ---------- figures ---------- */
+
+figure { margin: 1.6rem 0 2rem; }
+figure svg { display: block; width: 100%; max-width: 100%; height: auto; color: var(--ink-soft); }
+figcaption {
+  font-family: var(--display);
+  font-size: .805rem;
+  line-height: 1.45;
+  color: var(--muted);
+  margin-top: .8rem;
+  max-width: 62ch;
+}
+figcaption b { color: var(--ink-soft); font-weight: 600; }
+
+/* ---------- cards ---------- */
+
+.grid { display: grid; gap: .85rem; margin: 1.4rem 0 1.9rem; }
+.grid.g2 { grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); }
+.grid.g3 { grid-template-columns: repeat(auto-fit, minmax(206px, 1fr)); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.1rem 1.05rem;
+}
+
+.card h5 {
+  font-family: var(--display);
+  font-size: .855rem;
+  font-weight: 700;
+  margin: 0 0 .4rem;
+  letter-spacing: -.005em;
+  color: var(--ink);
+}
+
+.card p { margin: 0; font-size: .93rem; line-height: 1.5; color: var(--ink-soft); }
+.card p + p { margin-top: .55rem; }
+
+.card .metric {
+  font-family: var(--display);
+  font-size: 1.72rem;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  display: block;
+  margin: 0 0 .3rem;
+}
+
+.card .metric small {
+  font-size: .55em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-left: .25em;
+}
+
+/* ---------- stopping-rule rows ---------- */
+
+.rules { border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; margin: 1.4rem 0 1.9rem; background: var(--surface); }
+.rule-row { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: .9rem; padding: .72rem .95rem; border-top: 1px solid var(--rule-soft); align-items: baseline; }
+.rule-row:first-child { border-top: 0; }
+.rule-row .cond { font-family: var(--mono); font-size: .805rem; color: var(--stop); line-height: 1.45; }
+.rule-row .act { font-family: var(--display); font-size: .84rem; color: var(--ink-soft); line-height: 1.45; }
+
+@media (max-width: 620px) { .rule-row { grid-template-columns: 1fr; gap: .2rem; } }
+
+/* ---------- escalation ladder: a real sequence, so it gets real numbers ---------- */
+
+ol.ladder { list-style: none; padding: 0; margin: 1.4rem 0 1.9rem; counter-reset: rung; }
+ol.ladder li {
+  counter-increment: rung;
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  gap: .9rem;
+  padding: .7rem 0;
+  border-top: 1px solid var(--rule-soft);
+  margin: 0;
+  align-items: baseline;
+}
+ol.ladder li::before {
+  content: counter(rung, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: .77rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-weight: 600;
+}
+.rung-body { font-size: .96rem; line-height: 1.5; }
+.gate {
+  display: block;
+  font-family: var(--display);
+  font-size: .765rem;
+  color: var(--muted);
+  margin-top: .22rem;
+}
+.gate b { color: var(--stop); font-weight: 600; }
+
+/* ---------- sources ---------- */
+
+.sources { font-family: var(--display); font-size: .83rem; line-height: 1.5; }
+.sources h3 { font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 1.6rem 0 .55rem; font-weight: 700; }
+.sources ul { list-style: none; padding: 0; display: grid; gap: .3rem; grid-template-columns: repeat(auto-fit, minmax(288px, 1fr)); }
+.sources li { margin: 0; }
+
+footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-family: var(--display); font-size: .78rem; color: var(--muted); max-width: 66ch; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ---------- diagrams ---------- */
+
+.dg { color: var(--ink-soft); }
+.dg .bx { fill: var(--surface); stroke: currentColor; stroke-width: 1; }
+.dg .bx2 { fill: var(--surface-2); stroke: currentColor; stroke-width: 1; }
+.dg .bxa { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 1.2; }
+.dg .bxs { fill: var(--stop-dim); stroke: var(--stop); stroke-width: 1.2; }
+.dg .lb { fill: var(--ink); font-family: var(--display); font-size: 12px; font-weight: 600; }
+.dg .lbs { fill: var(--muted); font-family: var(--display); font-size: 10.5px; font-weight: 500; }
+.dg .lbm { fill: var(--muted); font-family: var(--mono); font-size: 9.5px; }
+.dg .lba { fill: var(--accent); font-family: var(--display); font-size: 11px; font-weight: 700; }
+.dg .lbx { fill: var(--stop); font-family: var(--display); font-size: 11px; font-weight: 700; }
+.dg .lbcap { fill: var(--muted); font-family: var(--display); font-size: 10px; font-weight: 700; letter-spacing: .09em; }
+.dg .ar { stroke: currentColor; stroke-width: 1.2; fill: none; }
+.dg .ara { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.dg .arx { stroke: var(--stop); stroke-width: 1.4; fill: none; }
+.dg .dash { stroke-dasharray: 4 3; }
+.dg .hd { fill: currentColor; }
+.dg .hda { fill: var(--accent); }
+.dg .hdx { fill: var(--stop); }
+.dg .xm { stroke: var(--stop); stroke-width: 1.6; fill: none; }
+.dg .rl { stroke: var(--rule); stroke-width: 1; fill: none; }
+
+hr.div { border: 0; border-top: 1px solid var(--rule); margin: 3.5rem 0 0; }
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { border-right: 0; border-bottom: 1px solid var(--rule); padding: 1.75rem 1.25rem 1.5rem; }
+  .rail-inner { position: static; gap: 1.4rem; }
+  nav.toc ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 0 1.1rem; }
+  .key { display: none; }
+  main { padding-top: 2rem; }
+}
+</style>
+
+<div class="shell">
+
+<aside class="rail">
+  <div class="rail-inner">
+    <div class="rail-mark">
+      AI Revenue Recovery
+      <span>Landscape &amp; standards &#183; Aug 2026</span>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <ol>
+        <li><a href="#thesis"><b>01</b> The constraint that reframes it</a></li>
+        <li><a href="#surfaces"><b>02</b> Four loss surfaces</a></li>
+        <li><a href="#standards"><b>03</b> Industry standards</a></li>
+        <li><a href="#india"><b>04</b> The India layer</a></li>
+        <li><a href="#rails"><b>05</b> Rails &amp; mandate mechanics</a></li>
+        <li><a href="#landscape"><b>06</b> Who already does this</a></li>
+        <li><a href="#gaps"><b>07</b> Where the whitespace is</a></li>
+        <li><a href="#bar"><b>08</b> Meeting the bar</a></li>
+        <li><a href="#surface"><b>09</b> The Razorpay build surface</a></li>
+        <li><a href="#build"><b>10</b> Implications for a build</a></li>
+        <li><a href="#status"><b>11</b> Build status</a></li>
+        <li><a href="#sources"><b>12</b> Sources</a></li>
+      </ol>
+    </nav>
+
+    <div class="key">
+      <div class="key-h">Source confidence</div>
+      <p><span class="chip p">Primary</span> &nbsp;<b>Quotable.</b> Regulator text, scheme rules, or official product docs.</p>
+      <p><span class="chip v">Vendor</span> &nbsp;<b>Attribute it.</b> A company&rsquo;s claim about its own product.</p>
+      <p><span class="chip t">Unverified</span> &nbsp;<b>Directional only.</b> Third-party figure with no traceable methodology.</p>
+      <p><span class="chip x">Check first</span> &nbsp;<b>Blocked.</b> The source refused access. Read it before writing code against it.</p>
+    </div>
+  </div>
+</aside>
+
+<main>
+
+<header class="measure">
+  <p class="eyebrow">Razorpay Buildathon &#183; Problem analysis</p>
+  <h1>India&rsquo;s revenue recovery gap</h1>
+  <p class="lede">Every mature playbook for winning back failed payments is built on a mechanism that Indian regulation does not permit. That single fact decides what is worth building.</p>
+</header>
+
+<section id="thesis">
+  <div class="measure">
+    <h2>01 &nbsp;The constraint that reframes the problem</h2>
+    <p class="sub">Start here, because it invalidates the obvious approach.</p>
+
+    <div class="thesis">
+      <h4>Stripe&rsquo;s own retry documentation</h4>
+      <p class="quote">Stripe doesn&rsquo;t retry payments if:<br>&nbsp;&nbsp;&mdash; No payment methods are available.<br>&nbsp;&nbsp;&mdash; The issuer returned a hard decline code.<br>&nbsp;&nbsp;&mdash; <b>The payment card is India-issued.</b><br>&nbsp;&nbsp;&mdash; The Stripe Connect account has been disconnected.</p>
+      <p><span class="chip p">Primary</span> &nbsp;The most sophisticated failed-payment recovery engine in the industry switches itself off for Indian cards.</p>
+    </div>
+
+    <p>That is not a product gap. It is the RBI e-mandate regime. A recurring debit in India needs a mandate registered with Additional Factor Authentication, a pre-debit notification ahead of every debit, and an amount inside the mandate&rsquo;s cap. You cannot quietly re-present a charge eight times over a fortnight and wait for an issuer to relent.</p>
+
+    <p><b>So the dominant recovery mechanism worldwide &mdash; the silent retry &mdash; is structurally unavailable here as the primary lever.</b> Smart Retries, Adaptive Acceptance, account-updater-driven credential refresh: all of it assumes the merchant can re-attempt without the customer present. Indian recovery has to put the customer back in the loop.</p>
+
+    <p>Which changes the question. Not <em>&ldquo;how do we retry more intelligently?&rdquo;</em> but <em>&ldquo;what is the shortest, cheapest, most compliant path back to an authenticated payment moment?&rdquo;</em> &mdash; a UPI intent deep link, a WhatsApp payment link, a mandate re-registration, an eNACH re-presentation timed to a salary credit, or a conversation. That is a decision problem over channels and rails under legal constraint, not a timing-optimisation problem.</p>
+
+    <figure>
+      <svg viewBox="0 0 880 326" class="dg" role="img" aria-label="Comparison of a failed recurring debit outside India, where silent retries run without customer contact, against India, where authentication and pre-debit notification rules block the silent path and force recovery through customer-present rails.">
+        <defs>
+          <marker id="f2-hd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hd" points="0,1 10,5 0,9"></polygon></marker>
+          <marker id="f2-hda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hda" points="0,1 10,5 0,9"></polygon></marker>
+          <marker id="f2-hdx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hdx" points="0,1 10,5 0,9"></polygon></marker>
+        </defs>
+
+        <text x="0" y="14" class="lbcap">OUTSIDE INDIA</text>
+        <line x1="0" y1="24" x2="880" y2="24" class="rl"></line>
+
+        <rect x="0" y="40" width="132" height="44" rx="4" class="bx2"></rect>
+        <text x="66" y="60" text-anchor="middle" class="lb">Debit fails</text>
+        <text x="66" y="74" text-anchor="middle" class="lbm">code 51</text>
+
+        <line x1="132" y1="62" x2="238" y2="62" class="ar" marker-end="url(#f2-hd)"></line>
+
+        <rect x="244" y="40" width="184" height="44" rx="4" class="bx"></rect>
+        <text x="336" y="60" text-anchor="middle" class="lb">Silent retry &#215;8</text>
+        <text x="336" y="74" text-anchor="middle" class="lbm">ML-timed, 2 weeks</text>
+        <path d="M 280 40 C 280 16 392 16 392 40" class="ar" marker-end="url(#f2-hd)"></path>
+        <text x="336" y="12" text-anchor="middle" class="lbs">no customer contact</text>
+
+        <line x1="428" y1="62" x2="534" y2="62" class="ar" marker-end="url(#f2-hd)"></line>
+
+        <rect x="540" y="40" width="132" height="44" rx="4" class="bx2"></rect>
+        <text x="606" y="66" text-anchor="middle" class="lb">Recovered</text>
+
+        <text x="0" y="130" class="lbcap">INDIA</text>
+        <line x1="0" y1="140" x2="880" y2="140" class="rl"></line>
+
+        <rect x="0" y="156" width="132" height="44" rx="4" class="bx2"></rect>
+        <text x="66" y="176" text-anchor="middle" class="lb">Debit fails</text>
+        <text x="66" y="190" text-anchor="middle" class="lbm">mandate rail</text>
+
+        <line x1="132" y1="178" x2="238" y2="178" class="arx dash" marker-end="url(#f2-hdx)"></line>
+        <rect x="244" y="156" width="184" height="44" rx="4" class="bxs"></rect>
+        <text x="336" y="175" text-anchor="middle" class="lbx">Silent retry blocked</text>
+        <text x="336" y="190" text-anchor="middle" class="lbm">AFA + pre-debit notice</text>
+        <line x1="318" y1="148" x2="354" y2="208" class="xm"></line>
+        <line x1="354" y1="148" x2="318" y2="208" class="xm"></line>
+
+        <path d="M 66 200 C 66 236 150 240 196 240" class="ara" marker-end="url(#f2-hda)"></path>
+
+        <rect x="202" y="220" width="150" height="38" rx="4" class="bxa"></rect>
+        <text x="277" y="243" text-anchor="middle" class="lba">UPI intent link</text>
+        <rect x="202" y="268" width="150" height="38" rx="4" class="bxa"></rect>
+        <text x="277" y="291" text-anchor="middle" class="lba">WhatsApp link</text>
+        <path d="M 196 240 C 178 240 178 287 196 287" class="ara"></path>
+
+        <rect x="376" y="220" width="164" height="38" rx="4" class="bxa"></rect>
+        <text x="458" y="243" text-anchor="middle" class="lba">Mandate re-register</text>
+        <rect x="376" y="268" width="164" height="38" rx="4" class="bxa"></rect>
+        <text x="458" y="291" text-anchor="middle" class="lba">eNACH re-present</text>
+
+        <line x1="352" y1="239" x2="370" y2="239" class="ara" marker-end="url(#f2-hda)"></line>
+        <line x1="352" y1="287" x2="370" y2="287" class="ara" marker-end="url(#f2-hda)"></line>
+
+        <path d="M 540 239 C 578 239 578 200 606 200" class="ara" marker-end="url(#f2-hda)"></path>
+        <path d="M 540 287 C 578 287 578 200 606 200" class="ara"></path>
+
+        <rect x="612" y="156" width="132" height="44" rx="4" class="bx2"></rect>
+        <text x="678" y="182" text-anchor="middle" class="lb">Recovered</text>
+
+        <text x="760" y="244" class="lbs">customer</text>
+        <text x="760" y="258" class="lbs">present</text>
+        <text x="760" y="181" class="lbs">every path</text>
+        <text x="760" y="195" class="lbs">needs an act</text>
+      </svg>
+      <figcaption><b>The whole design space, in one picture.</b> Outside India the recovery loop closes without the customer ever knowing. In India the silent edge is severed, so every surviving path routes through an authenticated customer action &mdash; which makes channel choice, timing and consent the engineering problem rather than retry scheduling.</figcaption>
+    </figure>
+
+    <div class="note">
+      <p><b>On this page&rsquo;s numbers.</b> Recovery-rate statistics in this market are unusually polluted &mdash; a large share of what ranks on search is vendor content repeating vendor claims. Every figure is tagged by how far it could be traced: <span class="chip p">Primary</span> is quotable, <span class="chip v">Vendor</span> should be attributed, <span class="chip t">Unverified</span> is unsafe for a slide, and <span class="chip x">Check first</span> marks something you must confirm before writing code against it.</p>
+      <p>An independent verification pass against primary sources found <b>three things wrong or overstated</b> here and they have been corrected in place: the Mastercard retry cadence (unverifiable &mdash; removed), the Visa cap (it is category-conditional, not flat), and the scope of the RBI contact-hours window (it is written for calls, not all channels). Corrections are called out where they occur rather than quietly patched.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="surfaces">
+  <div class="measure">
+    <h2>02 &nbsp;Revenue leaks in four places, not one</h2>
+    <p class="sub">The brief bundles them together. They differ in signal, latency, law and counterparty &mdash; so they are four different products.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 880 258" class="dg" role="img" aria-label="A payment pipeline from intent through checkout, authorization, mandate debit and invoice to cash, with four labelled leak points showing which surface loses money and which system event fires at each one.">
+      <defs>
+        <marker id="f1-hd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hd" points="0,1 10,5 0,9"></polygon></marker>
+        <marker id="f1-hdx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hdx" points="0,1 10,5 0,9"></polygon></marker>
+      </defs>
+
+      <rect x="0" y="24" width="126" height="46" rx="4" class="bx2"></rect>
+      <text x="63" y="52" text-anchor="middle" class="lb">Intent</text>
+      <rect x="144" y="24" width="126" height="46" rx="4" class="bx"></rect>
+      <text x="207" y="52" text-anchor="middle" class="lb">Checkout</text>
+      <rect x="288" y="24" width="126" height="46" rx="4" class="bx"></rect>
+      <text x="351" y="52" text-anchor="middle" class="lb">Authorization</text>
+      <rect x="432" y="24" width="126" height="46" rx="4" class="bx"></rect>
+      <text x="495" y="46" text-anchor="middle" class="lb">Mandate</text>
+      <text x="495" y="60" text-anchor="middle" class="lb">debit</text>
+      <rect x="576" y="24" width="126" height="46" rx="4" class="bx"></rect>
+      <text x="639" y="52" text-anchor="middle" class="lb">Invoice</text>
+      <rect x="720" y="24" width="126" height="46" rx="4" class="bxa"></rect>
+      <text x="783" y="52" text-anchor="middle" class="lba">Cash</text>
+
+      <line x1="126" y1="47" x2="138" y2="47" class="ar" marker-end="url(#f1-hd)"></line>
+      <line x1="270" y1="47" x2="282" y2="47" class="ar" marker-end="url(#f1-hd)"></line>
+      <line x1="414" y1="47" x2="426" y2="47" class="ar" marker-end="url(#f1-hd)"></line>
+      <line x1="558" y1="47" x2="570" y2="47" class="ar" marker-end="url(#f1-hd)"></line>
+      <line x1="702" y1="47" x2="714" y2="47" class="ar" marker-end="url(#f1-hd)"></line>
+
+      <line x1="207" y1="70" x2="207" y2="110" class="arx" marker-end="url(#f1-hdx)"></line>
+      <line x1="351" y1="70" x2="351" y2="110" class="arx" marker-end="url(#f1-hdx)"></line>
+      <line x1="495" y1="70" x2="495" y2="110" class="arx" marker-end="url(#f1-hdx)"></line>
+      <line x1="639" y1="70" x2="639" y2="110" class="arx" marker-end="url(#f1-hdx)"></line>
+
+      <text x="207" y="130" text-anchor="middle" class="lbx">A &#183; Abandonment</text>
+      <text x="351" y="130" text-anchor="middle" class="lbx">B &#183; Decline</text>
+      <text x="495" y="130" text-anchor="middle" class="lbx">C &#183; Mandate fail</text>
+      <text x="639" y="130" text-anchor="middle" class="lbx">D &#183; Overdue</text>
+
+      <text x="207" y="151" text-anchor="middle" class="lbm">payment.failed</text>
+      <text x="351" y="151" text-anchor="middle" class="lbm">decline code</text>
+      <text x="495" y="151" text-anchor="middle" class="lbm">subscription.pending</text>
+      <text x="639" y="151" text-anchor="middle" class="lbm">aging bucket</text>
+
+      <text x="207" y="175" text-anchor="middle" class="lbs">seconds</text>
+      <text x="351" y="175" text-anchor="middle" class="lbs">real time</text>
+      <text x="495" y="175" text-anchor="middle" class="lbs">T+0 to T+3</text>
+      <text x="639" y="175" text-anchor="middle" class="lbs">days to months</text>
+
+      <line x1="0" y1="200" x2="880" y2="200" class="rl"></line>
+      <text x="0" y="220" class="lbcap">DETECTION LATENCY WIDENS LEFT TO RIGHT &mdash; AND SO DOES THE COST OF RECOVERY</text>
+      <text x="0" y="243" class="lbs">A and B are warm and self-serve. C is a rail problem. D is a relationship problem.</text>
+    </svg>
+    <figcaption><b>One pipeline, four exits.</b> The signal that fires tells you which surface you are on, and the surface determines which regulator applies and who you are allowed to contact.</figcaption>
+  </figure>
+
+  <div class="bleed">
+    <div class="scroller">
+      <table>
+        <caption>The four surfaces</caption>
+        <thead>
+          <tr><th>Surface</th><th>What is lost</th><th>Legal regime</th><th>Counterparty</th><th>Published magnitude</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="t-lead">A &#183; Checkout abandonment</td>
+            <td>Intent existed, no authorization attempted</td>
+            <td>DPDP consent, TRAI/DLT, Meta template policy</td>
+            <td>Consumer, warm</td>
+            <td class="num">~70.2% abandon <span class="chip t">Unverified</span><br>~3.3% email recovery <span class="chip t">Unverified</span></td>
+          </tr>
+          <tr>
+            <td class="t-lead">B &#183; Payment failure</td>
+            <td>Authorization attempted, issuer or gateway declined</td>
+            <td>Card scheme retry caps, PA rules</td>
+            <td>Consumer, present</td>
+            <td class="num">80&ndash;85% &rarr; 90%+ SR with routing <span class="chip v">Vendor</span></td>
+          </tr>
+          <tr>
+            <td class="t-lead">C &#183; Mandate / subscription</td>
+            <td>Recurring obligation failed to debit</td>
+            <td>RBI E-Mandate Framework, NPCI rails</td>
+            <td>Consumer, absent</td>
+            <td class="num">20&ndash;40% of SaaS churn <span class="chip t">Unverified</span><br>55% recovered <span class="chip v">Vendor</span></td>
+          </tr>
+          <tr>
+            <td class="t-lead">D &#183; Receivables</td>
+            <td>Invoice raised, cash never arrived</td>
+            <td>MSMED / s.43B(h), RBI recovery conduct</td>
+            <td>Business or borrower</td>
+            <td class="num">&minus;20% past-due AR <span class="chip v">Vendor</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="measure">
+    <div class="note">
+      <p><b>A fifth, quieter surface.</b> Billing and metering leakage &mdash; unbilled usage, botched proration, price uplifts never applied. It is not in the brief&rsquo;s example list, but it is where a real share of &ldquo;revenue slipping away&rdquo; actually sits, and it is invisible to every tool in section 05.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="standards">
+  <div class="measure">
+    <h2>03 &nbsp;The standards a judge will assume you know</h2>
+    <p class="sub">Recovery is a regulated craft with published rules. Getting these wrong is not a missed optimisation, it is a fine.</p>
+
+    <h3>Soft versus hard declines is the first branch of any agent</h3>
+    <p>Stripe publishes the exact list of decline codes it will not retry. <span class="chip p">Primary</span></p>
+  </div>
+
+  <div class="bleed measure">
+    <div class="scroller">
+      <table>
+        <caption>Non-retryable decline codes</caption>
+        <thead><tr><th>Code</th><th>Correct action</th></tr></thead>
+        <tbody>
+          <tr><td class="num"><code>incorrect_number</code></td><td>Collect a new instrument</td></tr>
+          <tr><td class="num"><code>lost_card</code> &#183; <code>stolen_card</code> &#183; <code>pickup_card</code></td><td>Collect a new instrument; never re-present</td></tr>
+          <tr><td class="num"><code>revocation_of_authorization</code></td><td>Mandate is dead &mdash; re-register</td></tr>
+          <tr><td class="num"><code>revocation_of_all_authorizations</code></td><td>Stop all attempts on this customer</td></tr>
+          <tr><td class="num"><code>authentication_required</code></td><td>Customer-present flow with AFA</td></tr>
+          <tr><td class="num"><code>highest_risk_level</code></td><td>Do not retry; risk review</td></tr>
+          <tr><td class="num"><code>transaction_not_allowed</code></td><td>Wrong rail for this instrument</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="measure">
+    <p>The subtle part: Stripe keeps the retry <em>schedule</em> running for these but only <em>executes</em> once a new payment method appears. <span class="chip p">Primary</span> The lesson generalises &mdash; a hard decline is not a scheduling problem, it is a credential-collection problem, and an agent that treats them alike burns attempts it cannot get back.</p>
+
+    <p>Soft declines worth acting on: insufficient funds, generic issuer decline, velocity limits, temporary issuer unavailability, and expired card once refreshed.</p>
+
+    <h3>Network retry caps are literally why the brief says &ldquo;stopping rules&rdquo;</h3>
+
+    <p>Visa does not publish one flat retry limit. It sorts authorization response codes into <b>four categories</b> &mdash; introduced April 2020, with category assignments and code descriptions updated effective 17 April 2021 &mdash; and the category decides whether you may retry at all: <span class="chip p">Primary</span></p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h5>Visa Category 1 &mdash; &ldquo;issuer will never approve&rdquo;</h5>
+        <p><span class="metric">0<small>reattempts permitted</small></span> Not a scheduling problem. Response Code 14, invalid account number, must never be reattempted using the same account number at all.</p>
+      </div>
+      <div class="card">
+        <h5>Visa Category 2 &mdash; &ldquo;cannot approve at this time&rdquo;</h5>
+        <p><span class="metric">15<small>reattempts / 30 days</small></span> The number everyone quotes &mdash; but it applies only to this category, and the bulletin does not scope it to card-not-present.</p>
+      </div>
+    </div>
+
+    <p>On Mastercard the stop signal is per transaction rather than a cap: <b>Merchant Advice Code 03</b> means <em>do not try again</em> (for example, account closed) and <b>MAC 21</b> signals payment cancellation. Mastercard charges a fee for any retry submitted within 30 days of receiving either. <span class="chip p">Primary</span></p>
+
+    <div class="note">
+      <p><b>Two corrections worth carrying forward.</b> First, the widely repeated claim that Mastercard caps retries at roughly one per day or ten per thirty days <b>could not be found in any scheme or PSP source</b> &mdash; it should not be cited. Second, Visa&rsquo;s bulletin links excess reattempts to its risk-adjusted fees but <em>states no amount</em>; the familiar &ldquo;$0.10 per attempt&rdquo; comes from processor fee schedules (with roughly $0.05 more cross-border), so confirm current pricing with your acquirer rather than quoting it as a scheme rule.</p>
+    </div>
+
+    <p>The operative design consequence survives both corrections: a recovery agent needs a <b>per-credential, per-decline-category attempt counter on a rolling 30-day window</b>, plus a hard branch on category and on MAC. Build that and you have most of a defensible stopping-rule story; skip it and a reviewer who works in payments will find it in thirty seconds.</p>
+
+    <h3>Retry timing: what the state of the art actually does</h3>
+    <p>Stripe Smart Retries is the best-documented engine in the category. <span class="chip p">Primary</span></p>
+    <ul>
+      <li>Recommended default <b>8 attempts within 2 weeks</b>; configurable windows of 1 week, 2 weeks, 3 weeks, 1 month or 2 months. Hand-rolled schedules are capped at <b>3 retries</b>.</li>
+      <li>Named model signals: the <b>number of distinct devices that presented that payment method in the last N hours</b>, and best-time-to-pay effects &mdash; debit cards in some countries convert slightly better at 12:01 AM local time.</li>
+      <li>An explicit payment-method fallback order: subscription default method, then subscription default source, then customer default method, then the legacy customer source. Update the wrong field after a failure and retries keep hitting the old instrument.</li>
+      <li>End-of-schedule behaviour is a policy choice, not a default: cancel, mark unpaid, or leave past due.</li>
+    </ul>
+
+    <p><b>The most transferable detail for India</b> is how Stripe treats mandate-based rails, which get hard caps rather than ML timing: <span class="chip p">Primary</span></p>
+
+    <div class="bleed">
+      <div class="scroller">
+        <table>
+          <caption>Direct-debit retry caps &mdash; the precedent for eNACH and UPI AutoPay</caption>
+          <thead><tr><th>Rail</th><th class="num">Max retries</th><th class="num">Window</th><th>Retryable failure</th></tr></thead>
+          <tbody>
+            <tr><td class="t-lead">ACH Direct Debit</td><td class="num">2</td><td class="num">40 days</td><td>Insufficient funds only</td></tr>
+            <tr><td class="t-lead">SEPA Direct Debit</td><td class="num">2</td><td class="num">30 days</td><td>Insufficient funds only</td></tr>
+            <tr><td class="t-lead">Bacs Direct Debit</td><td class="num">2</td><td class="num">30 days</td><td>Insufficient funds only</td></tr>
+            <tr><td class="t-lead">AU BECS</td><td class="num">2</td><td class="num">30 days</td><td>Insufficient funds only</td></tr>
+            <tr><td class="t-lead">ACSS &#183; NZ BECS</td><td class="num">1</td><td class="num">30 days</td><td>Insufficient funds only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p>Two retries in forty days, for one failure reason. That is what a mandate rail tolerates &mdash; and it is the right order of magnitude to assume for eNACH until NPCI documentation says otherwise.</p>
+
+    <h3>The unglamorous highest-ROI lever</h3>
+    <p>Credential freshness. Visa Account Updater, Mastercard Automatic Billing Updater and network tokenisation quietly repair the dead-credential class of failure before any retry is needed &mdash; surfaced as &ldquo;automatic card updates&rdquo; by Stripe <span class="chip p">Primary</span> and Real Time Account Updater by Adyen <span class="chip v">Vendor</span>. In India, where card-on-file tokenisation is already mandatory, the equivalent hygiene lever is not PAN freshness but <b>mandate health</b>: expiry, remaining cap, VPA validity, revocation state.</p>
+
+    <h3>Orchestration and cascading</h3>
+    <p>Razorpay Optimizer routes across gateways on roughly 150 parameters against some 600 million payment data points per decision, claiming up to a 10% success-rate improvement with downtime-aware failover and cost-versus-success routing. <span class="chip v">Vendor</span> Juspay&rsquo;s Hyperswitch is an open-source orchestrator over 300+ processors, and its Smart Retries feature is explicitly scoped to cases <em>&ldquo;where user action is not required after entering card information&rdquo;</em> &mdash; non-3DS technical and business declines. <span class="chip p">Primary</span></p>
+
+    <p>That scoping line matters more than the routing claims: cascading only helps where no customer action is needed, so on AFA-gated and mandate flows it is not the lever. Juspay also ships a <b>Revenue Recovery</b> product &mdash; an ML retry engine with 20+ parameters, a configurable retry budget, and error-category gating so you can retry only recoverable classes. <span class="chip p">Primary</span> It is the closest existing product to this problem statement, and it publishes no numbers.</p>
+
+    <h3>The dunning ladder</h3>
+    <p>The industry-standard escalation, in order, is remarkably consistent across vendors:</p>
+    <ol class="ladder">
+      <li><span class="rung-body">In-app banner or hosted invoice notice<span class="gate">Free, zero annoyance, no consent question</span></span></li>
+      <li><span class="rung-body">Email with a self-serve update link<span class="gate">Cheapest real channel</span></span></li>
+      <li><span class="rung-body">SMS on a registered template<span class="gate"><b>Gate:</b> DLT header and template pre-approval</span></span></li>
+      <li><span class="rung-body">WhatsApp utility message with a payment link<span class="gate"><b>Gate:</b> opt-in on record, utility not marketing category</span></span></li>
+      <li><span class="rung-body">Failed-payment wall &mdash; soft paywall gating the product<span class="gate">Churnkey reports this adding 4&ndash;12% recovery lift <span class="chip v">Vendor</span></span></span></li>
+      <li><span class="rung-body">Grace-period expiry, then downgrade or suspend<span class="gate">The only rung with real leverage on a consumer</span></span></li>
+      <li><span class="rung-body">Voice contact or human handoff<span class="gate"><b>Gate:</b> 08:00&ndash;19:00 window, frequency cap, no third-party disclosure</span></span></li>
+      <li><span class="rung-body">Agency, facilitation council, or legal notice<span class="gate"><b>Gate:</b> lender remains liable for agent conduct</span></span></li>
+    </ol>
+
+    <p>FlexPay&rsquo;s split of <b>&ldquo;Invisible Recovery&rdquo;</b> against <b>&ldquo;Engaged Recovery&rdquo;</b> is the cleanest published framing of the two tracks. <span class="chip v">Vendor</span> The arbitrage for an Indian build is simply that track one is mostly closed, so all the competitive energy has to go into track two &mdash; which is exactly where the incumbents invest least.</p>
+
+    <h3>Measurement: where nearly everyone is weak</h3>
+    <p>Gross recovered is not incremental recovered. Attribution can tell you which message preceded a payment; it cannot tell you which payments would have arrived anyway. The only honest answer is a <b>randomised holdout</b> &mdash; withhold treatment from an otherwise identical randomly assigned group and difference the outcomes.</p>
+    <p>This is not a pedantic point. It is the single most common flaw in the category: vendor claims of 41&ndash;80% recovery carry no counterfactual, and third-party reviewers flag exactly that. <span class="chip t">Unverified</span> The brief&rsquo;s phrase <em>&ldquo;measured money recovered across a batch&rdquo;</em> is an invitation to do the honest version.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="india">
+  <div class="measure">
+    <h2>04 &nbsp;The India layer</h2>
+    <p class="sub">Six bodies of rules a recovery agent has to satisfy simultaneously. This is the moat.</p>
+
+    <h3>RBI Digital Payments E-Mandate Framework, 2026</h3>
+    <p><b>RBI/DPSS/2026-27/396</b>, issued 21 April 2026 and effective immediately, repealing and consolidating eight circulars issued between August 2019 and August 2024 into one rulebook for recurring transactions on cards, prepaid instruments and UPI. <span class="chip p">Primary</span></p>
+
+    <div class="grid g3">
+      <div class="card"><h5>AFA-free ceiling</h5><p><span class="metric">&#8377;15,000</span>Per transaction, for recurring e-mandate debits.</p></div>
+      <div class="card"><h5>Raised ceiling</h5><p><span class="metric">&#8377;1,00,000</span>Insurance premiums, mutual fund subscriptions, credit-card bill payments.</p></div>
+      <div class="card"><h5>Pre-transaction notice</h5><p><span class="metric">24<small>hours minimum</small></span>Naming merchant, amount, debit date and e-mandate reference.</p></div>
+    </div>
+
+    <p>AFA remains mandatory in four places: mandate registration, modification, withdrawal, and the first transaction &mdash; plus any debit above the applicable ceiling. The issuer must also provide a facility, separate from the notification, to <b>opt out of any particular transaction</b> or of the mandate itself, with that opt-out validated by AFA.</p>
+
+    <div class="thesis">
+      <h4>The most useful thing the Framework does not say</h4>
+      <p>Three independent full-text reads of the circular found <b>no provision at all on retry, re-presentation, reattempt, or the handling of a failed or declined debit.</b> The E-Mandate Framework is silent on the subject.</p>
+      <p>That is not permission for unlimited retries &mdash; it means the retry constraint lives somewhere else: in NPCI rail rules, in card-scheme rules, or in your payment aggregator&rsquo;s contract. If you are asked &ldquo;which regulation caps your retries?&rdquo;, the honest answer is that RBI does not, and you have to name the actual source. Most write-ups on this subject get it wrong in the confident direction.</p>
+    </div>
+
+    <p><b>What this does to a design.</b> Every debit carries a 24-hour notification lead time and a per-debit customer veto. Retry cadence is therefore measured in days, not minutes. Pause and cancel are first-class customer actions the agent must detect and honour, not edge cases. And an amount above the ceiling is not a retry candidate at all &mdash; it is a debit awaiting an authentication click, which is a different state needing a different nudge.</p>
+
+    <h3>Three rails, three different retry physics</h3>
+  </div>
+
+  <div class="bleed">
+    <div class="scroller">
+      <table>
+        <caption>Recovery mechanics by rail</caption>
+        <thead><tr><th>Rail</th><th>Typical failure</th><th>Retry mechanics</th><th>Best recovery move</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="t-lead">Card mandate / SI</td>
+            <td>Issuer decline codes</td>
+            <td>Scheme caps <em>and</em> mandate cap; AFA above the ceiling</td>
+            <td>Refresh mandate or credential, then debit</td>
+          </tr>
+          <tr>
+            <td class="t-lead">UPI AutoPay</td>
+            <td>Insufficient balance, mandate not found or revoked, PSP timeout</td>
+            <td>Mandate-level; the user can pay instantly out of band</td>
+            <td><b>UPI intent deep link</b> &mdash; the highest-converting recovery rail in India</td>
+          </tr>
+          <tr>
+            <td class="t-lead">eNACH / NACH</td>
+            <td>Bank rejection codes, T+n settlement lag</td>
+            <td>Presentation and re-presentation on a banking-day calendar</td>
+            <td>Re-present near a salary credit, not on a fixed day-of-month</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="measure">
+    <p>Razorpay documents the eNACH lag explicitly: a retry is attempted <em>only after confirmation or rejection of the last payment, which may take more than 24 hours</em>, with charges shifted to T&minus;1 or T&minus;3 around bank holidays. <span class="chip p">Primary</span> Any agent that assumes same-day failure feedback on this rail will double-present.</p>
+
+    <h3>What Razorpay actually gives you &mdash; and where it stops</h3>
+    <p>From the Razorpay docs: <span class="chip p">Primary</span></p>
+    <ul>
+      <li><code>payment.failed</code> fires on failure or timeout &mdash; and is the recommended signal when a customer closes the checkout window or abandons, with <code>payment.authorized</code> watched for late authorisations.</li>
+      <li>On failure the subscription moves to <code>pending</code>, an auto-retry is attempted <b>the following day</b>, and <code>subscription.pending</code> fires.</li>
+      <li>When retries are exhausted the subscription moves to <code>halted</code>; invoices keep generating but are not auto-charged, and the customer is emailed to pay manually.</li>
+      <li>Success at any point fires <code>subscription.charged</code>. The <code>subscription_card_change</code> flag controls whether a customer may update their card at checkout.</li>
+    </ul>
+
+    <div class="note">
+      <p><b>The gap, stated plainly.</b> Razorpay&rsquo;s published recovery policy is &ldquo;retry tomorrow, then halt, then email.&rdquo; A fixed schedule, one channel, no per-account strategy, no diagnosis, no measurement. That is not a criticism of a payment gateway &mdash; orchestrating recovery is not its job. It is the specification for what you build on top.</p>
+    </div>
+
+    <h3>Communication compliance &mdash; and a common misreading</h3>
+    <p>The instinct is to treat every reminder as needing fresh consent. That is not what the DPDP Act says, and the distinction is worth getting right because it decides whether your agent can legally speak at all.</p>
+    <p>Processing is lawful on <b>consent</b> (s.4 read with s.6, which confines consent to the purpose stated in the notice) or on one of the enumerated <b>&ldquo;certain legitimate uses&rdquo;</b> in s.7. The Act has <em>no</em> GDPR-style &ldquo;performance of a contract&rdquo; or &ldquo;legitimate interests&rdquo; ground. So a payment reminder to an existing customer needs no fresh consent <b>provided loan servicing and repayment communication was itself a purpose specified in the notice at collection</b>. What the Act prohibits is re-using marketing consent for collections, or servicing consent for promotional content &mdash; not servicing messages as such. <span class="chip t">Unverified</span></p>
+
+    <div class="note">
+      <p><b>Do not ship on this paragraph alone.</b> The verification pass could not retrieve the verbatim text of s.4, s.6 or s.7 &mdash; MeitY was blocked, India Code returned errors, and the Gazette PDF would not extract. The section references above rest on model knowledge, not on retrieved statutory text. Have someone pull the bare Act PDF and read the clause before this goes into compliance copy.</p>
+    </div>
+
+    <p>The channel layer is separate. Under <b>TCCCPR 2018</b> commercial SMS needs a registered header and a pre-approved template, with escalating penalties up to disconnection of telecom resources &mdash; but genuine transactional and service-implicit messages to an existing customer are not promotional and are not suppressed by DND preferences. WhatsApp is not telecom SMS, so DLT does not apply, though Meta&rsquo;s utility-versus-marketing template rules and opt-in requirements do. <span class="chip t">Unverified</span></p>
+
+    <p>The engineering consequence is concrete either way: <b>never let a generative agent improvise copy on a DLT channel.</b> Template IDs are pre-approved artefacts. The agent selects a template and fills approved variables; it does not write the message.</p>
+
+    <h3>Collections conduct &mdash; and the window is narrower than people think, in one direction only</h3>
+    <p>The governing instrument is <b>RBI/2022-23/108</b> (DOR.ORG.REC.65/21.04.158/2022-23), <em>Outsourcing of Financial Services &mdash; Responsibilities of regulated entities employing Recovery Agents</em>, dated 12 August 2022, still in force as of August 2026 &mdash; it is <em>not</em> among the circulars repealed by the Digital Lending Directions, 2025. <span class="chip p">Primary</span></p>
+    <p>It binds commercial banks (excluding payments banks), all-India financial institutions, NBFCs including housing finance companies, co-operative banks and asset reconstruction companies. Microfinance loans sit under a separate Master Direction and are carved out.</p>
+
+    <div class="thesis">
+      <h4>The 8-to-7 window is written as a restriction on calling only</h4>
+      <p>The circular prohibits harassment including <em>&ldquo;persistently calling the borrower and/or calling the borrower before 8:00 a.m. and after 7:00 p.m. for recovery of overdue loans&rdquo;</em>. SMS and WhatsApp are not covered by that clause &mdash; they fall under a separate, <b>time-agnostic</b> prohibition on <em>&ldquo;sending inappropriate messages either on mobile or through social media&rdquo;</em>. Email is not expressly named in either, and is caught only by the general bar on intimidation or harassment.</p>
+      <p>An earlier draft of this page claimed the window covered all four channels alike. It does not. The practical reading is still to hold every channel to 08:00&ndash;19:00 as a design default &mdash; a 2 a.m. WhatsApp is obviously &ldquo;inappropriate&rdquo; and the general harassment clause is broad &mdash; but know that the hard, quotable time restriction attaches to <b>voice calls</b>, and that the messaging clause bites on <em>content and persistence</em> instead of the clock.</p>
+    </div>
+
+    <p>On liability the circular is unambiguous: <em>&ldquo;the ultimate responsibility for their outsourced activities vests with them and they are, therefore, responsible for the actions of their service providers&rdquo;</em> &mdash; reinforced for digital lending by the 2025 Directions, under which the regulated entity <em>&ldquo;shall remain fully responsible and liable for all acts and omissions of the LSP&rdquo;</em>. <b>An autonomous agent is a service provider.</b> Whatever it says at 9 p.m. is the lender&rsquo;s liability, not the vendor&rsquo;s.</p>
+
+    <p>Worth borrowing as a frequency default, since RBI gives a window but no contact cap: the US Regulation F <b>&ldquo;7-in-7&rdquo;</b> presumption &mdash; no more than seven contact attempts per account in seven days, with a cooldown after a conversation. It is the best-codified contact-frequency rule in existence. <span class="chip t">Unverified</span></p>
+
+    <h3>The lever no Western tool has</h3>
+    <div class="thesis">
+      <h4>Section 43B(h), Income Tax Act</h4>
+      <p>Payments to Udyam-registered <b>micro and small</b> enterprises must be made within 15 days absent a written agreement, or by the agreed date subject to an outer cap of 45 days. Miss it and the buyer&rsquo;s <b>deduction for that expense is disallowed</b> for the year, deferred until payment actually happens. MSMED interest runs at three times the RBI bank rate, compounded monthly, with MSME Samadhaan and the facilitation councils as the adjudication route. <span class="chip t">Unverified</span></p>
+      <p>Effective from 1 April 2024. For a B2B chaser this is a factual, legitimate, non-harassing escalation argument with real financial teeth &mdash; and it is unique to India. A fiscal-year-end reminder that non-payment costs the buyer their tax deduction is compliant escalation of a kind no US or EU receivables tool can express.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="rails">
+  <div class="measure">
+    <h2>05 &nbsp;Rails and mandate mechanics</h2>
+    <p class="sub">The layer where a recovery agent actually lives. Some of this is well documented; a critical part of it is behind a wall, and it is worth knowing which is which.</p>
+
+    <h3>The 26-hour in-flight window kills imported dunning logic</h3>
+    <p>For a card e-mandate debit, Stripe waits <b>26 hours</b> after the payment request before charging &mdash; the 24-hour regulatory notification period plus buffer. During that time the PaymentIntent sits in <code>processing</code> and <em>cannot be cancelled</em>. A field, <code>processing.card.customer_notification.completes_at</code>, tells you when the charge will actually be attempted, and <code>approval_requested: true</code> means the customer must authenticate before then. <span class="chip p">Primary</span></p>
+
+    <p>So the minimum practical retry interval on Indian card standing instructions is roughly <b>one attempt per day</b>. A &ldquo;retry every six hours&rdquo; cadence lifted from Western card rails will stack overlapping intents that cannot be recalled, and generate a customer notification per attempt. Whether each retry needs its <em>own</em> fresh 24-hour notification is not stated explicitly anywhere I could reach &mdash; but each retry is a new PaymentIntent re-entering the 26-hour window, which implies yes. Treat one-attempt-per-day as the safe default and get it in writing from your aggregator before tightening it.</p>
+
+    <h3>A ready-made retryability partition</h3>
+    <p>Stripe&rsquo;s India e-mandate error taxonomy maps cleanly onto the three buckets an agent needs. Mirror these as the core state machine, then map NACH and UPI codes into the same buckets: <span class="chip p">Primary</span></p>
+  </div>
+
+  <div class="bleed">
+    <div class="scroller">
+      <table>
+        <caption>Three buckets, not a retry count</caption>
+        <thead><tr><th>Signal</th><th>Bucket</th><th>Correct action</th></tr></thead>
+        <tbody>
+          <tr><td class="num"><code>payment_intent_mandate_invalid</code></td><td class="t-lead">Terminal</td><td>Mandate is inactive. Re-onboard &mdash; no number of retries fixes it. Check mandate status <em>before</em> every attempt so you discover this without burning an attempt and a notification.</td></tr>
+          <tr><td class="num"><code>india_recurring_payment_mandate_canceled</code></td><td class="t-lead">Terminal</td><td>Cancelled, sometimes only discovered at charge time. Full customer-present AFA re-registration &mdash; a mandate cannot be updated, only cancelled and recreated.</td></tr>
+          <tr><td class="num"><code>processing_error</code></td><td class="t-lead">Transient</td><td>The only cleanly auto-retryable class.</td></tr>
+          <tr><td class="num"><code>transaction_not_approved</code></td><td class="t-lead">Needs a human act</td><td>Customer paused auto-debit or did not authenticate. Send a message, not a retry.</td></tr>
+          <tr><td class="num">Notification undelivered</td><td class="t-lead">Neither party&rsquo;s fault</td><td>The issuing bank failing to deliver the pre-debit notification is a first-class, testable failure mode. Re-notify &mdash; do not count it as a dunning strike against the customer.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="measure">
+    <h3>The legal hinge for out-of-band recovery</h3>
+    <div class="thesis">
+      <h4>On-session collection sits outside the e-mandate debit rules</h4>
+      <p>Stripe notes that while the regulation speaks of &ldquo;recurring&rdquo; payments, <em>networks treat any off-session &mdash; that is, merchant-initiated &mdash; transaction as in scope</em>. The notification and per-debit AFA obligations attach to <b>merchant-initiated</b> debits.</p>
+      <p>Which implies the lawful post-failure play: a <b>customer-present, customer-authenticated</b> collection &mdash; a UPI intent deep link, a UPI collect request, or a hosted payment link where the payer enters their UPI PIN or completes 3DS &mdash; is on-session, and therefore outside the 24-hour wait and outside the AutoPay ceiling. So after a failed mandate debit: notify, then invite the customer to settle <em>this cycle</em> on-session, and leave the mandate intact for the next one. <span class="chip t">Unverified</span> This is an inference from the scope statement, not an explicit RBI clause &mdash; verify before it becomes compliance copy. But if it holds, it is the central mechanic of Indian revenue recovery.</p>
+    </div>
+
+    <h3>What is behind a wall &mdash; and what people invent to fill the gap</h3>
+    <p>An operational finding worth recording: <b><code>npci.org.in</code> returns HTTP 403 to programmatic fetches</b> on both its <code>/PDF/</code> and <code>/uploads/</code> paths, while search engines index the same PDFs fine. Every NPCI circular below was located and none could be read. If your agent is meant to keep its own rulebook fresh from circulars, a plain HTTP fetcher will silently fail against the single most important publisher.</p>
+
+    <p>Consequently these remain <b>unverified</b>, and the page will not guess at them:</p>
+    <ul>
+      <li><b>NACH / eNACH return reason codes.</b> No code-to-meaning table could be read. Pull these four manually: Circular 240 <em>Reject Reason Codes For E-mandate variants</em>, Circular 274 <em>Change in Return codes and descriptions in NACH</em>, Circular 011 MMS <em>Mandate Variant wise reason code</em>, and <b>NACH-006-FY-24-25</b> <em>Changes in Rejection Code description in NACH</em> &mdash; that last one matters most, because it changed descriptions, so any hardcoded string matching will drift. Also get the subset your own sponsor bank actually returns; acquirers pass through subsets and sometimes remap.</li>
+      <li><b>Presentation and re-presentation limits, settlement cycles, holiday behaviour.</b> The authoritative document is the NACH Procedural Guidelines V.6. Note also that Circular 016 FY2019-20 is titled, in part, <em>&ldquo;Penalty on specific returns&rdquo;</em> &mdash; meaning <b>some retries cost money per attempt</b>, not just goodwill. An agent that maximises attempts without knowing which return codes carry penalties can be net-negative on revenue.</li>
+      <li><b>The UPI AutoPay retry cap.</b> The commonly cited <em>&ldquo;1 original debit plus 3 retries&rdquo;</em> figure traces, in this research, <b>only to a Razorpay marketing blog post</b> &mdash; not to the NPCI circular and not to Razorpay&rsquo;s own docs. Do not hardcode three retries on the strength of that. The current primary source is UPI OC No. 223 FY 2025-26, <em>Enhancement of UPI AutoPay</em>.</li>
+      <li><b>UPI AutoPay mandate-execution failure codes.</b> No primary listing found. Source them from your PSP&rsquo;s live API reference, and <b>log raw codes verbatim from day one</b> so the mapping can be built empirically before the spec is in hand.</li>
+    </ul>
+
+    <p>One UPI ceiling is documented: per Stripe, UPI does not support recurring transactions above &#8377;15,000 &mdash; stated as a flat limitation rather than merely an AFA trigger. <span class="chip t">Unverified</span> NPCI has revised AutoPay limits at least twice by circular (OC-151, OC-151A), and the figure is category-dependent, so treat it as configuration read from a dated source, never a constant in code. A debit above the cap fails structurally and no retry policy rescues it; the recovery path is an on-session collect or a different rail entirely.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="landscape">
+  <div class="measure">
+    <h2>06 &nbsp;Who already does this</h2>
+    <p class="sub">Eight layers. Every incumbent owns one and is blind to the rest &mdash; which is the whole opportunity.</p>
+  </div>
+
+  <div class="bleed">
+    <div class="scroller">
+      <table>
+        <caption>The recovery stack, bottom to top</caption>
+        <thead><tr><th>Layer</th><th>Players</th><th>What they actually solve</th></tr></thead>
+        <tbody>
+          <tr><td class="t-lead">0 &#183; Networks &amp; issuers</td><td>Visa VAU, Mastercard ABU, network tokenisation, Merchant Advice Codes</td><td>Credential freshness and the stop signals everyone else must obey</td></tr>
+          <tr><td class="t-lead">1 &#183; PSP native</td><td><b>Stripe</b> (Smart Retries, Adaptive Acceptance, card updater, recovery analytics, no-code automations) &#183; <b>Adyen</b> RevenueAccelerate &#183; <b>Razorpay</b> (Optimizer, Magic Checkout, subscription auto-retry) &#183; <b>Juspay</b> Hyperswitch + Revenue Recovery &#183; Cashfree &#183; PayU</td><td>Authorization-rate optimisation and retry scheduling. The most complete published taxonomy, and the one that switches off for India.</td></tr>
+          <tr><td class="t-lead">2 &#183; Billing platforms</td><td>Recurly &#183; Chargebee (dunning + Receivables + Indian GST) &#183; Zuora &#183; Paddle / ProfitWell Retain &#183; Maxio</td><td>Dunning sequences bolted to subscription state</td></tr>
+          <tr><td class="t-lead">3 &#183; Recovery specialists</td><td>Butter Payments (per-merchant ML, ~128 data points per transaction <span class="chip v">Vendor</span>) &#183; FlexPay &#183; Gravy &#183; Churn Buster &#183; Churnkey &#183; Slicker &#183; FlyCode &#183; Redux</td><td>Failed-payment recovery as a priced-on-outcome service. US and EU first, card-centric.</td></tr>
+          <tr><td class="t-lead">4 &#183; Abandonment</td><td>Shopify native &#183; Klaviyo &#183; Mailchimp &#183; WebEngage &#183; CleverTap &#183; MoEngage &#183; Wigzo &#183; Razorpay Magic Checkout</td><td>Cart and checkout re-engagement, entirely disconnected from payment failure</td></tr>
+          <tr><td class="t-lead">5 &#183; B2B order-to-cash</td><td>HighRadius &#183; Versapay &#183; Billtrust &#183; Esker &#183; Upflow &#183; Growfin &#183; Tesorio &#183; Sidetrade &#183; KredX &#183; Cashinvoice</td><td>Collections workflow, cash application, DSO forecasting</td></tr>
+          <tr><td class="t-lead">6 &#183; Collections AI</td><td>Skit.ai (voice-first, 53k+ creditors <span class="chip v">Vendor</span>) &#183; TrueAccord (digital-first agency, HeartBeat ML) &#183; Symend (behavioural nudges) &#183; Prodigal (agent assist) &#183; InDebted &#183; Domu &#183; Credgenics &#183; Spocto/Yubi &#183; Convin &#183; Vodex</td><td>Delinquency engagement for lenders and telcos. Sarvam and Bhashini supply the Hinglish speech layer.</td></tr>
+          <tr><td class="t-lead">7 &#183; Agent infrastructure</td><td>Stripe agent skills and MCP <span class="chip p">Primary</span> &#183; human-in-the-loop orchestration frameworks</td><td>Plumbing for autonomous execution &mdash; newly available, barely applied to recovery</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="gaps">
+  <div class="measure">
+    <h2>07 &nbsp;Where the whitespace actually is</h2>
+    <p class="sub">Eight gaps, ordered by how directly the brief points at them.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="card"><h5>Nobody spans the funnel</h5><p>A customer who abandons checkout, then fails a mandate, then goes sixty days overdue is handled by three unrelated systems with no shared memory, no shared contact history, and no shared sense of how much this person has already been bothered.</p></div>
+    <div class="card"><h5>Diagnosis barely exists</h5><p>Incumbents act on decline codes. The brief says <em>&ldquo;payment degradation &rarr; root cause &rarr; recovery action&rdquo;</em> &mdash; and issuer degradation, gateway downtime, mandate revocation, genuine insufficient funds and intent-to-churn all demand different actions. That middle step is commercially unclaimed.</p></div>
+    <div class="card"><h5>Intervention is a static ladder</h5><p>Standard practice is a fixed dunning sequence. Missing: per-account choice of channel, timing and offer by expected value net of cost, annoyance and legal constraint. Uplift modelling is routine in marketing and rare here.</p></div>
+    <div class="card"><h5>Measurement is self-serving</h5><p>Vendors report gross recovered. Almost nobody runs a holdout. An honest incremental number is both harder to produce and more persuasive to anyone who knows the field.</p></div>
+    <div class="card"><h5>Compliance is bolted on</h5><p>No incumbent models scheme caps, mandate ceilings, notification lead times, contact windows, consent basis, template category and annoyance budget as <em>one constraint set</em> that every planned action must clear before execution.</p></div>
+    <div class="card"><h5>Audit trails are logs, not justifications</h5><p>A regulated lender has to answer &ldquo;why this person, at this hour, on this channel, with this offer, on what consent basis?&rdquo; Nobody exposes that as a queryable artefact.</p></div>
+    <div class="card"><h5>India-native blind spots</h5><p>No silent-retry lever. UPI intent as the highest-converting recovery rail, largely unexploited by the recovery-tool category. Hinglish and vernacular voice. eNACH banking calendars. Section 43B(h) as legitimate leverage.</p></div>
+    <div class="card"><h5>Promise-to-pay is untracked</h5><p>The standard collections KPI &mdash; a captured commitment, then kept or broken &mdash; is essentially absent from the Indian SME receivables stack, despite being the single best predictor of whether cash arrives.</p></div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="bar">
+  <div class="measure">
+    <h2>08 &nbsp;Meeting the bar, phrase by phrase</h2>
+    <p class="sub">The brief&rsquo;s closing paragraph is the scoring rubric. Each phrase maps to a concrete, checkable requirement.</p>
+  </div>
+
+  <div class="bleed">
+    <div class="scroller">
+      <table>
+        <caption>From brief language to build requirement</caption>
+        <thead><tr><th>The brief says</th><th>Which demands</th><th>Standard to borrow</th></tr></thead>
+        <tbody>
+          <tr><td class="t-lead">&ldquo;detects revenue at risk&rdquo;</td><td>A ranked queue with a rupee figure attached, not a list of failures</td><td>Decline family, mandate health, aging-bucket features</td></tr>
+          <tr><td class="t-lead">&ldquo;determines the right intervention&rdquo;</td><td>Per-account action choice with expected value and cost</td><td>Uplift modelling; FlexPay&rsquo;s invisible-versus-engaged split</td></tr>
+          <tr><td class="t-lead">&ldquo;bounded recovery workflow&rdquo;</td><td>Hard caps on attempts, contacts, spend and elapsed time</td><td>Stripe 8-in-2-weeks; Visa 15-in-30; ACH 2-in-40</td></tr>
+          <tr><td class="t-lead">&ldquo;measured money recovered across a batch&rdquo;</td><td>Gross <em>and</em> incremental against a randomised holdout</td><td>Holdout experiment design</td></tr>
+          <tr><td class="t-lead">&ldquo;compliant escalation&rdquo;</td><td>An ordered ladder with a legal gate on every rung</td><td>08:00&ndash;19:00 window; DPDP purpose-scoped consent; DLT templates; pre-debit notice</td></tr>
+          <tr><td class="t-lead">&ldquo;stopping rules&rdquo;</td><td>Machine-checkable terminal conditions</td><td>Hard-decline list; MAC 03/21; mandate revoked; opt-out; budget exhausted</td></tr>
+          <tr><td class="t-lead">&ldquo;audit trail&rdquo;</td><td>Per-action record of trigger, diagnosis, alternatives, gates cleared, consent basis, outcome</td><td>Event-sourced decision log</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="measure">
+    <h3>The stopping rules, written as code would check them</h3>
+  </div>
+
+  <div class="rules measure">
+    <div class="rule-row"><span class="cond">decline_code in HARD_DECLINES</span><span class="act">Stop retrying. Switch to credential collection.</span></div>
+    <div class="rule-row"><span class="cond">merchant_advice_code in (03, 21)</span><span class="act">Stop. Network has said no further attempts.</span></div>
+    <div class="rule-row"><span class="cond">attempts(instrument, reason, 30d) &gt;= cap</span><span class="act">Stop. Scheme budget exhausted.</span></div>
+    <div class="rule-row"><span class="cond">mandate.state in (revoked, paused)</span><span class="act">Stop debiting. Route to re-registration.</span></div>
+    <div class="rule-row"><span class="cond">amount &gt; mandate.cap</span><span class="act">No retry is legal. Customer-present flow only.</span></div>
+    <div class="rule-row"><span class="cond">consent.withdrawn(channel)</span><span class="act">Stop permanently on that channel. Irreversible.</span></div>
+    <div class="rule-row"><span class="cond">contacts(account, 7d) &gt;= 7</span><span class="act">Cooldown. No further outreach this window.</span></div>
+    <div class="rule-row"><span class="cond">now not in 08:00..19:00 IST</span><span class="act">Defer. Never send, never call.</span></div>
+    <div class="rule-row"><span class="cond">dispute_raised or value &gt; threshold</span><span class="act">Hand to a human. Agent stops deciding.</span></div>
+  </div>
+
+  <div class="measure">
+    <p>Nine conditions, all cheap to evaluate, all auditable. Together they are the difference between a demo that recovers money and a demo that would get its operator fined.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 880 300" class="dg" role="img" aria-label="A recovery loop in which a failure signal is diagnosed into a root cause, expanded into five candidate actions, then filtered by a constraint gate that rejects three of them before one is executed and measured against a randomised holdout, with the outcome feeding back into diagnosis.">
+      <defs>
+        <marker id="f3-hd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hd" points="0,1 10,5 0,9"></polygon></marker>
+        <marker id="f3-hda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon class="hda" points="0,1 10,5 0,9"></polygon></marker>
+      </defs>
+
+      <rect x="0" y="94" width="118" height="52" rx="4" class="bx2"></rect>
+      <text x="59" y="116" text-anchor="middle" class="lb">Signal</text>
+      <text x="59" y="132" text-anchor="middle" class="lbm">payment.failed</text>
+
+      <line x1="118" y1="120" x2="150" y2="120" class="ar" marker-end="url(#f3-hd)"></line>
+
+      <rect x="156" y="94" width="118" height="52" rx="4" class="bx"></rect>
+      <text x="215" y="116" text-anchor="middle" class="lb">Diagnose</text>
+      <text x="215" y="132" text-anchor="middle" class="lbm">root cause</text>
+
+      <line x1="274" y1="120" x2="306" y2="120" class="ar" marker-end="url(#f3-hd)"></line>
+
+      <text x="312" y="24" class="lbcap">CANDIDATE ACTIONS</text>
+      <rect x="312" y="34" width="150" height="26" rx="3" class="bx"></rect>
+      <text x="322" y="51" class="lbs">Retry at salary date</text>
+      <rect x="312" y="66" width="150" height="26" rx="3" class="bx"></rect>
+      <text x="322" y="83" class="lbs">UPI intent link</text>
+      <rect x="312" y="98" width="150" height="26" rx="3" class="bx"></rect>
+      <text x="322" y="115" class="lbs">WhatsApp template</text>
+      <rect x="312" y="130" width="150" height="26" rx="3" class="bx"></rect>
+      <text x="322" y="147" class="lbs">SMS reminder</text>
+      <rect x="312" y="162" width="150" height="26" rx="3" class="bx"></rect>
+      <text x="322" y="179" class="lbs">Voice call now</text>
+
+      <rect x="500" y="24" width="34" height="172" rx="4" class="bxs"></rect>
+      <text x="517" y="114" text-anchor="middle" class="lbx" transform="rotate(-90 517 110)">CONSTRAINT GATE</text>
+
+      <line x1="462" y1="47" x2="496" y2="47" class="ar" marker-end="url(#f3-hd)"></line>
+      <line x1="462" y1="79" x2="496" y2="79" class="ar" marker-end="url(#f3-hd)"></line>
+      <line x1="462" y1="111" x2="496" y2="111" class="ar" marker-end="url(#f3-hd)"></line>
+      <line x1="462" y1="143" x2="496" y2="143" class="ar" marker-end="url(#f3-hd)"></line>
+      <line x1="462" y1="175" x2="496" y2="175" class="ar" marker-end="url(#f3-hd)"></line>
+
+      <line x1="540" y1="40" x2="556" y2="54" class="xm"></line>
+      <line x1="556" y1="40" x2="540" y2="54" class="xm"></line>
+      <text x="566" y="51" class="lbx">scheme cap</text>
+
+      <line x1="540" y1="136" x2="556" y2="150" class="xm"></line>
+      <line x1="556" y1="136" x2="540" y2="150" class="xm"></line>
+      <text x="566" y="147" class="lbx">no DLT template</text>
+
+      <line x1="540" y1="168" x2="556" y2="182" class="xm"></line>
+      <line x1="556" y1="168" x2="540" y2="182" class="xm"></line>
+      <text x="566" y="179" class="lbx">outside 08&ndash;19</text>
+
+      <path d="M 534 79 C 660 79 660 100 700 100" class="ara" marker-end="url(#f3-hda)"></path>
+      <path d="M 534 111 C 660 111 660 100 700 100" class="ara"></path>
+
+      <rect x="706" y="76" width="174" height="48" rx="4" class="bxa"></rect>
+      <text x="793" y="97" text-anchor="middle" class="lba">Execute &amp; log</text>
+      <text x="793" y="113" text-anchor="middle" class="lbm">trigger &#183; why &#183; gates</text>
+
+      <line x1="793" y1="124" x2="793" y2="160" class="ara" marker-end="url(#f3-hda)"></line>
+
+      <rect x="706" y="166" width="174" height="48" rx="4" class="bx"></rect>
+      <text x="793" y="187" text-anchor="middle" class="lb">Measure vs holdout</text>
+      <text x="793" y="203" text-anchor="middle" class="lbm">incremental &#8377;</text>
+
+      <path d="M 706 190 C 560 190 300 198 215 198 L 215 152" class="ar dash" marker-end="url(#f3-hd)"></path>
+      <text x="400" y="216" class="lbs">outcome updates the next diagnosis</text>
+
+      <line x1="0" y1="248" x2="880" y2="248" class="rl"></line>
+      <text x="0" y="268" class="lbcap">THE GATE IS THE PRODUCT</text>
+      <text x="0" y="288" class="lbs">Every incumbent has the boxes. None of them has a wall the planner cannot walk around.</text>
+    </svg>
+    <figcaption><b>Where the compliance work has to live.</b> A generative planner proposes; the gate rejects on machine-checkable rules and records why. Putting the constraint check between decision and execution &mdash; rather than in a policy document &mdash; is what produces a bounded workflow, real stopping rules and an audit trail from one mechanism.</figcaption>
+  </figure>
+</section>
+
+<hr class="div">
+
+<section id="surface">
+  <div class="measure">
+    <h2>09 &nbsp;The Razorpay build surface</h2>
+    <p class="sub">What is actually wireable in test mode, what needs a sales conversation, and the one loop that will run live on stage.</p>
+
+    <h3>Razorpay ships an official MCP server</h3>
+    <p>This is the single biggest time-saver available and it is easy to miss: <b><code>github.com/razorpay/razorpay-mcp-server</code></b> (Go), runnable three ways &mdash; remotely via <code>npx mcp-remote https://mcp.razorpay.com/mcp</code> with a base64 <code>key_id:key_secret</code> header, locally via <code>docker run razorpay/mcp</code>, or built from source. It exposes 40+ tools, so the intervention APIs arrive already tool-shaped. <span class="chip p">Primary</span></p>
+
+    <p>Confirmed tools relevant to recovery: <code>create_payment_link</code>, <code>create_payment_link_upi</code>, <code>send_payment_link</code>, <code>update_payment_link</code>, <code>capture_payment</code>, <code>initiate_payment</code>, <code>resend_otp</code>, <code>submit_otp</code>, <code>fetch_payment_card_details</code>, <code>create_qr_code</code>, <code>create_refund</code>, <code>fetch_tokens</code>, <code>revoke_token</code>, plus order and settlement tools.</p>
+
+    <p>Note what is <em>absent</em>: <b>no subscription tools</b> &mdash; no charge-invoice, no update-card &mdash; and <b>no payout creation</b>. Those legs must go through the REST API or an official SDK. Plan for MCP plus one SDK rather than MCP alone.</p>
+
+    <h3>The subscription failure ladder, precisely</h3>
+    <p>More specific than the general docs suggest: a failed day-0 auto-charge moves the subscription to <code>pending</code>, and Razorpay reattempts on <b>days 1, 2 and 3</b>; if all fail it moves to <code>halted</code>. <span class="chip p">Primary</span> That is the four-day window the agent operates inside &mdash; and it should act <em>while pending</em>, before Razorpay&rsquo;s own retries are exhausted, not after halting.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h5>Best play while <code>pending</code></h5>
+        <p>Just deliver a card-update link. If the customer changes their card while pending, <b>Razorpay automatically charges the last invoice</b> and returns the subscription to active on success. No custom charge orchestration needed.</p>
+      </div>
+      <div class="card">
+        <h5>Best play once <code>halted</code></h5>
+        <p>Invoices keep being created but are not auto-charged. Enumerate invoices in <code>issued</code> state and charge them manually. This is the difference between &ldquo;churned&rdquo; and &ldquo;recovered&rdquo;.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><b>A hard constraint on the action space.</b> Subscriptions can only be updated in <code>authenticated</code> and <code>active</code> states &mdash; the Update Subscription API is closed in <code>created</code>, <code>pending</code> and <code>halted</code>. Which is to say: closed in exactly the states a recovery agent cares about. The available moves are card-update links, manual invoice charges and payment links, not subscription mutation.</p>
+    </div>
+
+    <h3>Free money, and the easiest thing to demo</h3>
+    <p><code>payment.authorized</code> fires when a payment is authorized but not captured, and Razorpay auto-refunds uncaptured authorizations after a window. An agent that watches for it and calls <code>capture_payment</code> in time recovers revenue with <b>zero customer contact</b> &mdash; no consent question, no template, no contact window. It is also trivially demonstrable in test mode.</p>
+
+    <h3>Test mode: what works, what stalls</h3>
+    <ul>
+      <li><b>Webhooks are per-mode</b> and a test-mode webhook receives only test events &mdash; so the whole agent can be driven end to end through a tunnel URL without a live merchant account. <span class="chip p">Primary</span></li>
+      <li><b>Confirmed event strings:</b> <code>payment.failed</code>, <code>payment.authorized</code>, <code>order.paid</code>. <span class="chip p">Primary</span></li>
+      <li><b>Unconfirmed event strings</b> &mdash; the supported-events page could not be fetched, twice. The <code>subscription.*</code>, <code>invoice.*</code>, <code>payment_link.*</code>, <code>refund.*</code> and dispute namespaces are from memory, not a retrieved page. <span class="chip x">Check first</span> <code>subscription.pending</code> and <code>subscription.halted</code> are the agent&rsquo;s two most important triggers, and a wrong string is a silently dead subscription &mdash; confirm them before coding.</li>
+      <li><b>Subscriptions have a documented test page</b>, so you can manufacture <code>pending</code> and <code>halted</code> rather than waiting for real failures. This removes the main data-availability risk. <span class="chip p">Primary</span></li>
+      <li><b>Smart Collect has a test-payments flow</b> &mdash; so the &ldquo;offer an alternative rail&rdquo; branch is demoable: create a virtual account, simulate an inbound transfer, show the agent reconciling it against the failed order.</li>
+      <li><b>RazorpayX test mode stalls.</b> Dummy balance, no approval workflow, and payouts must be advanced manually from the Dashboard. Do not build an automated end-to-end payout demo. Live payouts additionally need activation and KYC.</li>
+      <li><b>Optimizer and Magic Checkout gating is unconfirmed.</b> Both exist with docs, but no statement on self-serve versus enterprise enablement was retrievable. Optimizer is conceptually the strongest recovery lever here &mdash; verify you can actually demo it before putting it in the pitch. <span class="chip x">Check first</span></li>
+    </ul>
+
+    <div class="thesis">
+      <h4>The one loop with no dependencies</h4>
+      <p>Test-mode webhook &rarr; <code>payment.failed</code> or <code>subscription.pending</code> &rarr; agent diagnoses and decides &rarr; <code>create_payment_link_upi</code> + <code>send_payment_link</code> (or a manual invoice charge for halted subscriptions) &rarr; <code>payment_link.paid</code> / <code>order.paid</code> closes the loop and stops the nudging.</p>
+      <p>Every leg is test-mode capable, MCP-covered, and free of enterprise gating, KYC and manual Dashboard steps. If something has to work live in front of judges, it is this.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="build">
+  <div class="measure">
+    <h2>10 &nbsp;What the research implies for a build</h2>
+    <p class="sub">Implications, not a design. The design should come from whichever surfaces you pick.</p>
+
+    <h3>Model it as a constrained sequential decision problem</h3>
+    <p>State is the obligation plus its failure history, mandate health, consent state, contactability and accumulated annoyance. Actions span retry now, retry at a chosen time, cascade to an alternate rail, UPI intent link, WhatsApp payment link, SMS on a template, voice, mandate re-registration, an instalment or partial offer, human handoff, and stop. The objective is rupees recovered minus cost minus annoyance and churn risk &mdash; and the constraint set is non-negotiable rather than a penalty term.</p>
+
+    <h3>Report the number that is hard to fake</h3>
+    <p>Randomise a holdout at account level &mdash; 15&ndash;20% of the batch, stratified by amount and decline family &mdash; and report gross recovered, <b>incremental recovered</b>, recovery rate by decline family, days-to-cash, contacts per recovery, cost per rupee recovered, and constraint violations, which should be zero. On surface D add the standard collections set: DSO, average days delinquent, collections effectiveness index, aging roll rates and promise-to-pay kept rate.</p>
+
+    <h3>Pick two surfaces, not four</h3>
+    <div class="grid g2">
+      <div class="card">
+        <h5>Option A &#183; Payment failure + mandate recovery</h5>
+        <p>Seed from Razorpay test-mode <code>payment.failed</code> and <code>subscription.pending</code>, and act inside the day-1-to-3 retry window rather than after halting. Strongest technical story, cleanest measurement, fully demoable per section 09, and the India constraint becomes the headline insight rather than an obstacle.</p>
+      </div>
+      <div class="card">
+        <h5>Option B &#183; B2B receivables + promise-to-pay</h5>
+        <p>Richest compliant escalation ladder, the unique Section 43B(h) and MSMED leverage, and promise-to-pay as a first-class tracked object. Weaker real-time signal, stronger narrative.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><b>One caution on scope.</b> Hinglish voice recovery is the most demonstrable direction and the most legally loaded &mdash; contact windows, bot disclosure, recording consent, and lender liability for agent conduct all land on it at once. It makes a superb thirty-second demo and a difficult compliance story. If you build it, build the gate first.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="status">
+  <div class="measure">
+    <h2>11 &nbsp;Build status</h2>
+    <p class="sub">The research became a running system on 28&ndash;29 August. This section tracks what is built against what sections 08&ndash;10 demanded, and is updated as slices land. The working tracker lives in the repository as <code>docs/PROGRESS.md</code>.</p>
+
+    <h3>Shipped and verified</h3>
+    <p>A Python/FastAPI backend with the PSP isolated behind an adapter (Razorpay webhook with HMAC verification and redelivery dedupe; a seeded synthetic generator emitting the identical canonical event). MySQL with the session timezone pinned to UTC at connect &mdash; seventeen tables and six views, including the decision spine: <code>decisions &rarr; decision_candidates &rarr; gate_evaluations</code>. And the core loop the brief asked for: deterministic diagnosis across ten failure families, candidate enumeration, <b>ten constraint gates that each record the authority they enforce</b>, and a transparent expected-value score in integer paise &mdash; hand-written priors and an explicit annoyance cost, deliberately not a model.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h5>The first live batch, in numbers</h5>
+        <p>502 events &rarr; 502 decisions, converged on re-run. Voice chosen 131 times, re-presentation 99, mandate re-registration 98, UPI intent link 74, human escalation 26 &mdash; and 74 deliberately withheld as the 15% randomised control arm. 281 candidate actions blocked across 10,544 gate evaluations. <b>Constraint violations: zero</b>, checked by a view that must stay empty.</p>
+      </div>
+      <div class="card">
+        <h5>The audit rows say what they don't know</h5>
+        <p>Where a cap could not be primary-sourced &mdash; the NPCI retry limits section 04 flags &mdash; the gate's audit row carries the admission verbatim: <code>caps.yaml:retry.upi_autopay [UNVERIFIED]</code>. The expected-value contrast landed as designed: voice is EV-negative on a &#8377;499 subscription and wins on a &#8377;45,000 EMI, because customer irritation is priced as an explicit line item, not assumed away.</p>
+      </div>
+    </div>
+
+    <h3>Feature-complete, 1 September</h3>
+    <p>The execution slice runs exactly-once on an idempotency key and creates <b>real Razorpay test-mode payment links</b>; a deterministic simulator advances outcomes so the batch shows &#8377;7.3L recovered with <b>&#8377;2.5L incremental over the holdout</b> (19.2% treatment vs 11.7% control). The Hinglish voice agent &mdash; one deterministic brain behind both a text simulation and a LiveKit-plus-Sarvam live-audio worker &mdash; screens every drafted line before it is spoken, logs drafted-versus-spoken per utterance, and captures promises with a spoken read-back: the first recorded promise resolved <b>kept</b>. Constraint violations remain zero. Left for demo day: a captured real test-mode webhook, the script, and a wifi-off rehearsal.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<section id="sources">
+  <div class="measure">
+    <h2>12 &nbsp;Sources</h2>
+    <p class="sub">Grouped by what they can support. Product documentation and the two RBI circulars were read at source; the remaining regulatory claims rest on secondary summaries, and the NPCI circulars could not be read at all.</p>
+  </div>
+
+  <div class="sources">
+    <h3>Primary &mdash; regulator and scheme</h3>
+    <ul>
+      <li><a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13374&amp;Mode=0">RBI &mdash; Digital Payments E-mandate Framework, 2026 (RBI/DPSS/2026-27/396)</a></li>
+      <li><a href="https://www.rbi.org.in/scripts/NotificationUser.aspx?Id=12378&amp;Mode=0">RBI &mdash; Recovery Agents circular, 12 Aug 2022 (RBI/2022-23/108)</a></li>
+      <li><a href="https://usa.visa.com/dam/VCOM/global/support-legal/documents/updates-to-rules-for-declined-transaction-resubmission-and-use-of-authorization-response-codes.pdf">Visa &mdash; Declined transaction resubmission and response-code categories</a></li>
+      <li><a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11668">RBI &mdash; Original e-mandate framework, Aug 2019 (Id=11668)</a></li>
+    </ul>
+
+    <h3>Located but unreadable &mdash; pull these manually</h3>
+    <p class="sub" style="margin-bottom:.6rem;">npci.org.in returns HTTP 403 to programmatic fetches. These are the authoritative documents for retry policy on Indian rails and none of them could be read.</p>
+    <ul>
+      <li><a href="https://www.npci.org.in/PDF/nach/circular/2024-25/NACH-006-FY-24-25-Changes-in-Rejection-Code-description-in-NACH.pdf">NPCI &mdash; NACH-006-FY-24-25, rejection code descriptions</a></li>
+      <li><a href="https://www.npci.org.in/PDF/nach/notofied-document/NACH-Procedural-Guidelines-V.6.pdf">NPCI &mdash; NACH Procedural Guidelines V.6</a></li>
+      <li><a href="https://www.npci.org.in/uploads/UPI_OC_No_223_FY_2025_26_Enhancement_of_UPI_Autopay_88b38535cb.pdf">NPCI &mdash; UPI OC 223 FY 2025-26, Enhancement of UPI AutoPay</a></li>
+      <li><a href="https://www.npci.org.in/what-we-do/upi/circular">NPCI &mdash; UPI circular index</a></li>
+    </ul>
+
+    <h3>Primary product documentation</h3>
+    <ul>
+      <li><a href="https://docs.stripe.com/billing/revenue-recovery/smart-retries">Stripe &mdash; Automate payment retries</a></li>
+      <li><a href="https://github.com/razorpay/razorpay-mcp-server">Razorpay &mdash; official MCP server</a></li>
+      <li><a href="https://razorpay.com/docs/payments/subscriptions/manually-charge-card/">Razorpay &mdash; Manually charge a subscription</a></li>
+      <li><a href="https://razorpay.com/docs/payments/subscriptions/states/">Razorpay &mdash; Subscription states</a></li>
+      <li><a href="https://razorpay.com/docs/payments/subscriptions/test/">Razorpay &mdash; Test subscriptions</a></li>
+      <li><a href="https://razorpay.com/docs/webhooks/payloads/">Razorpay &mdash; Webhook payloads</a></li>
+      <li><a href="https://razorpay.com/docs/payments/smart-collect/test-payments/">Razorpay &mdash; Smart Collect test payments</a></li>
+      <li><a href="https://razorpay.com/docs/x/dashboard/test-mode/">Razorpay &mdash; RazorpayX test mode</a></li>
+      <li><a href="https://docs.stripe.com/billing/revenue-recovery">Stripe &mdash; Revenue recovery overview</a></li>
+      <li><a href="https://stripe.com/docs/india-recurring-payments">Stripe &mdash; India recurring payments</a></li>
+      <li><a href="https://razorpay.com/docs/payments/subscriptions/payment-retries/">Razorpay &mdash; Subscription payment retries</a></li>
+      <li><a href="https://razorpay.com/docs/webhooks/subscriptions/">Razorpay &mdash; Subscription webhook events</a></li>
+      <li><a href="https://razorpay.com/docs/webhooks/">Razorpay &mdash; About webhooks</a></li>
+      <li><a href="https://razorpay.com/docs/payments/payment-methods/upi/upi-intent/">Razorpay &mdash; UPI Intent</a></li>
+      <li><a href="https://docs.hyperswitch.io/integration-guide/workflows/smart-retries">Hyperswitch &mdash; Smart Retries</a></li>
+      <li><a href="https://hyperswitch.io/revenue-recovery">Juspay &mdash; Revenue Recovery</a></li>
+    </ul>
+
+    <h3>Vendor claims</h3>
+    <ul>
+      <li><a href="https://stripe.com/blog/how-we-built-it-smart-retries">Stripe &mdash; How we built Smart Retries</a></li>
+      <li><a href="https://stripe.com/blog/ai-enhancements-to-adaptive-acceptance">Stripe &mdash; Adaptive Acceptance</a></li>
+      <li><a href="https://www.adyen.com/knowledge-hub/announcing-adyen-revenueaccelerate">Adyen &mdash; RevenueAccelerate</a></li>
+      <li><a href="https://razorpay.com/optimizer-intelligent-payments-routing/">Razorpay &mdash; Optimizer</a></li>
+      <li><a href="https://razorpay.com/blog/boost-payments-success-rates-with-optimizers-ai-ml-routing/">Razorpay &mdash; Optimizer AI/ML routing</a></li>
+      <li><a href="https://razorpay.com/blog/abandoned-cart-recovery-solution/">Razorpay &mdash; Abandoned cart recovery</a></li>
+      <li><a href="https://razorpay.com/magic-checkout/">Razorpay &mdash; Magic Checkout</a></li>
+      <li><a href="https://www.butterpayments.com/guides/disputes-chargebacks-guides/involuntary-churn/">Butter Payments &mdash; Involuntary churn</a></li>
+      <li><a href="https://www.highradius.com/en-gb/Blog/top-accounts-receivable-tools/">HighRadius &mdash; AR tooling landscape</a></li>
+      <li><a href="https://www.chargebee.com/billing/manage-subscriptions/">Chargebee &mdash; Subscription management</a></li>
+      <li><a href="https://www.growfin.ai/blog/guide-to-ar-automation-technologies-benefits-and-best-practices">Growfin &mdash; AR automation guide</a></li>
+      <li><a href="https://upflow.io/software/best-accounts-receivable-software">Upflow &mdash; AR software landscape</a></li>
+      <li><a href="https://recurly.com/research/churn-rate-benchmarks/">Recurly Research &mdash; Churn benchmarks</a></li>
+    </ul>
+
+    <h3>Regulatory &mdash; secondary summaries</h3>
+    <ul>
+      <li><a href="https://conventuslaw.com/report/rbis-digital-payments-e-mandate-framework-2026-consolidated-directions-for-recurring-digital-transactions/">Conventus Law &mdash; RBI E-Mandate Framework 2026</a></li>
+      <li><a href="https://www.lexorbis.com/rbis-digital-payments-e-mandate-framework-2026-consolidated-directions-for-recurring-digital-transactions/">LexOrbis &mdash; E-Mandate Framework 2026</a></li>
+      <li><a href="https://amlegals.com/upi-autopay-and-recurring-payments-compliance-checklist-under-rbis-e-mandate-framework-2026/">AMLEGALS &mdash; UPI AutoPay compliance checklist</a></li>
+      <li><a href="https://taxguru.in/rbi/rbi-issues-consolidated-directions-digital-payments-e-mandate-framework-2026.html">TaxGuru &mdash; Consolidated e-mandate directions</a></li>
+      <li><a href="https://freed.care/blog/rbi-guidelines-recovery-agents">RBI recovery agent guidelines &mdash; summary</a></li>
+      <li><a href="https://www.credsettle.com/rbi-guidelines-calling-after-7pm">Recovery agent calling hours &mdash; summary</a></li>
+      <li><a href="https://www.scconline.com/blog/post/2026/07/29/whatsapp-chatbot-opt-in-consent-dpdp-act-compliance/">SCC Online &mdash; DPDP consent for WhatsApp outreach</a></li>
+      <li><a href="https://www.messagecentral.com/sms-guideline/india">India SMS, DLT and TRAI compliance</a></li>
+      <li><a href="https://www.leegality.com/consent-blog/dpdp-telemarketing-regulations">Leegality &mdash; DPDP and telemarketing</a></li>
+      <li><a href="https://www.indiafilings.com/learn/section-43bh-new-msme-45-days-payment-rule">IndiaFilings &mdash; Section 43B(h)</a></li>
+      <li><a href="https://www.compliancecalendar.in/learn/section-43b-h-msme-45-days-payment-rule">Compliance Calendar &mdash; MSME 45-day rule</a></li>
+    </ul>
+
+    <h3>Third-party &mdash; directional only</h3>
+    <ul>
+      <li><a href="https://www.slickerhq.com/resources/blog/visa-mastercard-payment-retry-rules">Visa and Mastercard retry rules</a></li>
+      <li><a href="https://congrify.com/what-are-card-scheme-penalty-programs-and-why-should-you-care/">Card scheme penalty programmes</a></li>
+      <li><a href="https://baymard.com/lists/cart-abandonment-rate">Baymard &mdash; Cart abandonment statistics</a></li>
+      <li><a href="https://churnkey.co/blog/stripe-smart-retries">Churnkey &mdash; Smart Retries in practice</a></li>
+      <li><a href="https://www.reduxpayments.com/blog/stripe-smart-retries-explained">Redux &mdash; Smart Retries audit claims</a></li>
+      <li><a href="https://www.flycode.com/blog/top-payment-recovery-platforms-2026-comparison-chart-success-rate-stats">FlyCode &mdash; Recovery platform comparison</a></li>
+      <li><a href="https://churnbuster.io/articles/best-dunning-management-software/">Churn Buster &mdash; Dunning software landscape</a></li>
+      <li><a href="https://domu.ai/blog/best-ai-platform-for-debt-collection-automation-voice-email-and-sms-comparison-2026">Domu &mdash; Collections AI comparison</a></li>
+      <li><a href="https://amplitude.com/explore/experiment/incrementality-testing">Amplitude &mdash; Incrementality testing</a></li>
+      <li><a href="https://www.triplewhale.com/blog/incrementality-testing-methods">Triple Whale &mdash; Incrementality methods</a></li>
+      <li><a href="https://crmknowledgebase.com/measurement/holdouts-and-control-groups">Holdouts and control groups</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    Compiled 26 August 2026 for the Razorpay Buildathon problem statement &ldquo;AI Revenue Recovery&rdquo;, then checked against primary sources in a second pass that corrected three claims &mdash; the Mastercard retry cadence, the Visa cap, and the scope of the RBI contact-hours window. Two gaps remain deliberately open rather than filled with a plausible guess: the verbatim DPDP consent clauses, and every NPCI return code and re-presentation limit, whose circulars refuse programmatic access. Anything tagged <span class="chip t">Unverified</span> or <span class="chip x">Check first</span> needs a human to read the source before it becomes code or a compliance claim. Section 11 was added 29 August as the prototype shipped, and tracks the build against this research.
+  </footer>
+
+</section>
+
+</main>
+</div>
